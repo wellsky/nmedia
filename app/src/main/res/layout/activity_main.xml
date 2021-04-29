@@ -81,7 +81,7 @@
         app:constraint_referenced_ids="text"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/likeIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -89,7 +89,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text"
         app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-        android:contentDescription="@string/likes_count" />
+        android:contentDescription="@string/likes_count"
+        android:background="@android:color/transparent"
+        />
 
     <TextView
         android:id="@+id/likesCount"
@@ -103,7 +105,7 @@
         app:layout_constraintTop_toTopOf="@+id/likeIcon"
         />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,6 +116,7 @@
         app:layout_constraintTop_toBottomOf="@+id/text"
         app:srcCompat="@drawable/ic_baseline_share_24"
         android:contentDescription="@string/share"
+        android:background="@android:color/transparent"
         />
 
     <TextView
