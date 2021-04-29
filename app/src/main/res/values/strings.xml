@@ -3,4 +3,7 @@
     <string name="app_title">NMedia!</string>
     <string name="avatar_description">Avatar</string>
     <string name="more_menu">More actions</string>
+    <string name="likes_count">Likes count</string>
+    <string name="share">Share</string>
+    <string name="views">Views</string>
 </resources>
