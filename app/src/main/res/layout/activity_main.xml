@@ -67,7 +67,7 @@
         />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/barrier"
@@ -78,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="text"
+        app:constraint_referenced_ids="content"
         />
 
     <ImageButton
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/content"
         app:srcCompat="@drawable/ic_baseline_favorite_border_24"
         android:contentDescription="@string/likes_count"
         android:background="@android:color/transparent"
@@ -113,7 +113,7 @@
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
         app:layout_constraintStart_toEndOf="@+id/likesCount"
-        app:layout_constraintTop_toBottomOf="@+id/text"
+        app:layout_constraintTop_toBottomOf="@+id/content"
         app:srcCompat="@drawable/ic_baseline_share_24"
         android:contentDescription="@string/share"
         android:background="@android:color/transparent"
