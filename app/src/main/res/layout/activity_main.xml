@@ -82,7 +82,7 @@
         />
 
     <ImageButton
-        android:id="@+id/likeIcon"
+        android:id="@+id/likes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
@@ -100,9 +100,9 @@
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         tools:text="@sample/posts.json/data/likesCount"
-        app:layout_constraintBottom_toBottomOf="@+id/likeIcon"
-        app:layout_constraintStart_toEndOf="@+id/likeIcon"
-        app:layout_constraintTop_toTopOf="@+id/likeIcon"
+        app:layout_constraintBottom_toBottomOf="@+id/likes"
+        app:layout_constraintStart_toEndOf="@+id/likes"
+        app:layout_constraintTop_toTopOf="@+id/likes"
         />
 
     <ImageButton
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         tools:text="@sample/posts.json/data/viewsCount"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/likeIcon" />
+        app:layout_constraintTop_toTopOf="@+id/likes" />
 
     <ImageView
         android:id="@+id/views"
@@ -141,4 +141,15 @@
         android:contentDescription="@string/views"
         android:layout_marginStart="@dimen/common_spacing"
         />
+
+    <TextView
+        android:id="@+id/sharesCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/share"
+        app:layout_constraintStart_toEndOf="@+id/share"
+        app:layout_constraintTop_toTopOf="@+id/share"
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>
