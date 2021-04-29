@@ -2,4 +2,6 @@
 <resources>
     <string name="app_name">НМедиа</string>
     <string name="app_title">НМедиа!</string>
+    <string name="avatar_description">Аватар</string>
+    <string name="more_menu">Больше действий</string>
 </resources>
