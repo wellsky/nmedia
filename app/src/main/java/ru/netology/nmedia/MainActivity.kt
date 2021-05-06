@@ -32,13 +32,13 @@ class MainActivity : AppCompatActivity() {
 
         with(binding) {
             views.setOnClickListener {
-                viewModel.view()
+                viewModel.onView()
             }
             likes.setOnClickListener {
-                viewModel.like()
+                viewModel.onLikeButtonClicked()
             }
             share.setOnClickListener {
-                viewModel.share()
+                viewModel.onShareButtonClicked()
             }
         }
     }
