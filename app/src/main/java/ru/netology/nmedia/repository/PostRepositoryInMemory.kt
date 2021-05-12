@@ -20,21 +20,24 @@ class PostRepositoryInMemory: PostRepository {
     override val data = MutableLiveData<Post>(post)
 
     override fun view() {
-        data.value = data.value?.copy(
-            views = data.value!!.views + 1
+        val post = data.value ?: return
+        data.value = post.copy(
+            views = post.views + 1
         )
     }
 
     override fun like() {
-        data.value = data.value?.copy(
-            likedByMe = !data.value!!.likedByMe,
-            likes = if (data.value!!.likedByMe) data.value!!.likes - 1 else data.value!!.likes + 1
+        val post = data.value ?: return
+        data.value = post.copy(
+            likedByMe = !post.likedByMe,
+            likes = if (post.likedByMe) post.likes - 1 else post.likes + 1
         )
     }
 
     override fun share() {
-        data.value = data.value?.copy(
-            shares = data.value!!.shares + 1
+        val post = data.value ?: return
+        data.value = post.copy(
+            shares = post.shares + 1
         )
     }
 }
