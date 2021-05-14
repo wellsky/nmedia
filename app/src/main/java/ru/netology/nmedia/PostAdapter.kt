@@ -56,9 +56,18 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
             share.setOnClickListener {
                 listener.onShareButtonClicked(post)
             }
-            menu.setOnClickListener {
+            menu.setOnClickListener { it ->
                 PopupMenu(it.context, it).apply {
                     inflate(R.menu.post_options)
+                    setOnMenuItemClickListener { menuItem ->
+                        when (menuItem.itemId) {
+                            R.id.menu_remove -> {
+                                listener.onRemoveButtonClicked(post)
+                                true
+                            }
+                            else -> false
+                        }
+                    }
                 }.show()
             }
         }
