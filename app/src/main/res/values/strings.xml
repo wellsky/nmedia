@@ -6,4 +6,5 @@
     <string name="likes_count">Likes count</string>
     <string name="share">Share</string>
     <string name="views">Views</string>
+    <string name="menu_remove">Remove</string>
 </resources>

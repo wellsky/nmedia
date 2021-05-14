@@ -12,5 +12,6 @@ class PostViewModel: ViewModel() {
 
     fun onLikeButtonClicked(post: Post) = repository.likeById(post.id)
     fun onShareButtonClicked(post: Post) = repository.shareById(post.id)
+    fun onRemoveButtonClicked(post: Post) = repository.removeById(post.id)
     fun onView(post: Post) = repository.viewById(post.id)
 }
