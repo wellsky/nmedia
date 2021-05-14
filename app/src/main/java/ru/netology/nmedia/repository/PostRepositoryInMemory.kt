@@ -29,7 +29,27 @@ class PostRepositoryInMemory: PostRepository {
                     views = 1,
                     likes = 9,
                     shares = 0
-                )
+                ),
+                Post(
+                    id = 3,
+                    author = "Вася Пупкин",
+                    content = "Небольшой текст третьего сообщения",
+                    published = "23 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 0,
+                    likes = 0,
+                    shares = 0
+                ),
+                Post(
+                    id = 4,
+                    author = "Владимир Андреевич",
+                    content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+                    published = "22 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 0,
+                    likes = 0,
+                    shares = 0
+                ),
             )
         )
     }
@@ -46,7 +66,7 @@ class PostRepositoryInMemory: PostRepository {
             if (it.id != id) {
                 it
             } else {
-                val newLikes = if (it.likedByMe) -1 else 1 
+                val newLikes = if (it.likedByMe) -1 else 1
                 it.copy(likes = it.likes + newLikes, likedByMe = !it.likedByMe)
             }
         }
