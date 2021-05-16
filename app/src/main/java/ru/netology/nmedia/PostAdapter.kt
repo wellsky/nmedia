@@ -10,17 +10,11 @@ import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 interface AdapterListener {
+    fun onView(post: Post)
     fun onLikeButtonClicked(post: Post)
     fun onShareButtonClicked(post: Post)
     fun onRemoveButtonClicked(post: Post)
-    fun onView(post: Post)
-}
-
-class PostAdapterListener(val viewModel: PostViewModel): AdapterListener {
-    override fun onLikeButtonClicked(post: Post) = viewModel.onLikeButtonClicked(post)
-    override fun onShareButtonClicked(post: Post) = viewModel.onShareButtonClicked(post)
-    override fun onRemoveButtonClicked(post: Post) = viewModel.onRemoveButtonClicked(post)
-    override fun onView(post: Post) = viewModel.onView(post)
+    fun onEditButtonClicked(post: Post)
 }
 
 class PostAdapter (private val listener: AdapterListener):ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
@@ -63,6 +57,10 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
                         when (menuItem.itemId) {
                             R.id.menu_remove -> {
                                 listener.onRemoveButtonClicked(post)
+                                true
+                            }
+                            R.id.menu_edit -> {
+                                listener.onEditButtonClicked(post)
                                 true
                             }
                             else -> false

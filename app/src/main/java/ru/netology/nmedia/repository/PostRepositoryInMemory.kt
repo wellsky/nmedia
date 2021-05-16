@@ -5,13 +5,14 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemory: PostRepository {
+    private var nextId = 1L
     override val data: MutableLiveData<List<Post>>
 
     init {
         data = MutableLiveData(
             listOf(
                 Post(
-                    id = 1,
+                    id = nextId++,
                     author = "Автор с длинным именем и длинной фамилией",
                     content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
                     published = "21 мая в 18:0",
@@ -21,7 +22,7 @@ class PostRepositoryInMemory: PostRepository {
                     shares = 995
                 ),
                 Post(
-                    id = 2,
+                    id = nextId++,
                     author = "Второй автор с длинным именем и длинной фамилией",
                     content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
                     published = "22 мая в 18:0",
@@ -31,7 +32,7 @@ class PostRepositoryInMemory: PostRepository {
                     shares = 0
                 ),
                 Post(
-                    id = 3,
+                    id = nextId++,
                     author = "Вася Пупкин",
                     content = "Небольшой текст третьего сообщения",
                     published = "23 мая в 18:0",
@@ -41,7 +42,7 @@ class PostRepositoryInMemory: PostRepository {
                     shares = 0
                 ),
                 Post(
-                    id = 4,
+                    id = nextId++,
                     author = "Владимир Андреевич",
                     content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
                     published = "22 мая в 18:0",
@@ -50,7 +51,7 @@ class PostRepositoryInMemory: PostRepository {
                     likes = 0,
                     shares = 0
                 ),
-            )
+            ).reversed()
         )
     }
 
@@ -83,5 +84,22 @@ class PostRepositoryInMemory: PostRepository {
     override fun removeById(id: Long) {
         val posts = data.value?.filter{ it.id!=id }
         data.value = posts
+    }
+
+    override fun save(post: Post) {
+        if (post.id == 0L) {
+            val posts = listOf(post.copy(
+                    id = nextId++,
+                    author = "Новый автор",
+                    published = "Сейчас",
+                    likedByMe = false
+                ))
+            data.value = if (data.value != null) posts + data.value!! else posts
+        } else {
+            val posts = data.value?.map {
+                if (it.id != post.id) it else it.copy(content = post.content)
+            }
+            data.value = posts
+        }
     }
 }

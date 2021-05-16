@@ -8,4 +8,8 @@
     <string name="share">Поделиться</string>
     <string name="views">Просмотров</string>
     <string name="menu_remove">Удалить</string>
+    <string name="save_description">Отправить сообщение</string>
+    <string name="message_text">Текст сообщения</string>
+    <string name="error_empty_content">Ошибка: пустой текст сообщения</string>
+    <string name="menu_edit">Редактировать</string>
 </resources>
