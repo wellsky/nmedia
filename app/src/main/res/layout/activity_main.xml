@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="top"
-        app:constraint_referenced_ids="content,save"
+        app:constraint_referenced_ids="content,save,cancelEdition,editMessageTitle"
         />
 
     <EditText
@@ -35,7 +35,6 @@
         android:background="@android:color/transparent"
         android:padding="@dimen/common_spacing"
         android:importantForAutofill="no"
-        app:layout_constraintTop_toTopOf="@id/toolsTop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/save"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +44,10 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginLeft="@dimen/common_spacing"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginRight="@dimen/common_spacing"
         android:background="@android:color/transparent"
         android:contentDescription="@string/save_description"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -57,8 +60,45 @@
         android:id="@+id/cancelEdition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/content"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginRight="@dimen/common_spacing"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/editMessageContent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editMessageTitle"
         app:srcCompat="@drawable/ic_baseline_cancel_24" />
+
+    <TextView
+        android:id="@+id/editMessageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginLeft="@dimen/common_spacing"
+        android:text="@string/edit_message_title"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/editMessageContent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        />
+
+    <TextView
+        android:id="@+id/editMessageContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Edit message content"
+        app:layout_constraintBottom_toTopOf="@id/content"
+        app:layout_constraintEnd_toStartOf="@+id/cancelEdition"
+        app:layout_constraintStart_toStartOf="@+id/editMessageTitle"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/editMessageGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="cancelEdition, editMessageTitle, editMessageContent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
