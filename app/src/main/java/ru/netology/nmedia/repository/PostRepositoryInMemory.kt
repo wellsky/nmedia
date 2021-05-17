@@ -5,42 +5,101 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInMemory: PostRepository {
-    override val data: MutableLiveData<Post>
+    private var nextId = 1L
+    override val data: MutableLiveData<List<Post>>
 
     init {
         data = MutableLiveData(
-            Post(
-                id = 1,
-                author = "Автор с длинным именем и длинной фамилией",
-                content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
-                published = "21 мая в 18:0",
-                avatar = R.mipmap.ic_launcher_round,
-                views = 10099997,
-                likes = 99,
-                shares = 995
-            )
+            listOf(
+                Post(
+                    id = nextId++,
+                    author = "Автор с длинным именем и длинной фамилией",
+                    content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+                    published = "21 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 10099997,
+                    likes = 99,
+                    shares = 995
+                ),
+                Post(
+                    id = nextId++,
+                    author = "Второй автор с длинным именем и длинной фамилией",
+                    content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+                    published = "22 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 1,
+                    likes = 9,
+                    shares = 0
+                ),
+                Post(
+                    id = nextId++,
+                    author = "Вася Пупкин",
+                    content = "Небольшой текст третьего сообщения",
+                    published = "23 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 0,
+                    likes = 0,
+                    shares = 0
+                ),
+                Post(
+                    id = nextId++,
+                    author = "Владимир Андреевич",
+                    content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+                    published = "22 мая в 18:0",
+                    avatar = R.mipmap.ic_launcher_round,
+                    views = 0,
+                    likes = 0,
+                    shares = 0
+                ),
+            ).reversed()
         )
     }
 
-    override fun view() {
-        val post = data.value ?: return
-        data.value = post.copy(
-            views = post.views + 1
-        )
+    override fun viewById(id: Long) {
+        val posts = data.value?.map {
+            if (it.id != id) it else it.copy(views = it.views + 1)
+        }
+        data.value = posts
     }
 
-    override fun like() {
-        val post = data.value ?: return
-        data.value = post.copy(
-            likedByMe = !post.likedByMe,
-            likes = if (post.likedByMe) post.likes - 1 else post.likes + 1
-        )
+    override fun likeById(id: Long) {
+        val posts = data.value?.map {
+            if (it.id != id) {
+                it
+            } else {
+                val newLikes = if (it.likedByMe) -1 else 1
+                it.copy(likes = it.likes + newLikes, likedByMe = !it.likedByMe)
+            }
+        }
+        data.value = posts
     }
 
-    override fun share() {
-        val post = data.value ?: return
-        data.value = post.copy(
-            shares = post.shares + 1
-        )
+    override fun shareById(id: Long) {
+        val posts = data.value?.map {
+            if (it.id != id) it else it.copy(shares = it.shares + 1)
+        }
+        data.value = posts
+    }
+
+    override fun removeById(id: Long) {
+        val posts = data.value?.filter{ it.id!=id }
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        if (post.id == 0L) {
+            val posts = listOf(post.copy(
+                    id = nextId++,
+                    author = "Новый автор",
+                    published = "Сейчас",
+                    likedByMe = false
+                ))
+            data.value = if (data.value != null) posts + data.value!! else posts
+        } else {
+            val posts = data.value?.map {
+                if (it.id != post.id) it else it.copy(content = post.content)
+            }
+            data.value = posts
+        }
     }
 }

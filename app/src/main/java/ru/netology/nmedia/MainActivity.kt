@@ -1,11 +1,13 @@
 package ru.netology.nmedia
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.observe
-import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.ActivityMainBinding
+import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -17,52 +19,56 @@ class MainActivity : AppCompatActivity() {
 
         val viewModel: PostViewModel by viewModels()
 
-        viewModel.data.observe(this) { post ->
-            with(binding) {
-                avatar.setImageResource(post.avatar)
-                author.text = post.author
-                published.text = post.published
-                content.text = post.content
-                viewsCount.text = optimalCount(post.views)
-                likesCount.text = optimalCount(post.likes)
-                sharesCount.text = optimalCount(post.shares)
-                likes.setImageResource(if (post.likedByMe) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
+        val adapter = PostAdapter(object : AdapterListener {
+            override fun onLikeButtonClicked(post: Post) = viewModel.onLikeButtonClicked(post)
+            override fun onShareButtonClicked(post: Post) = viewModel.onShareButtonClicked(post)
+            override fun onEditButtonClicked(post: Post) = viewModel.onEditButtonClicked(post)
+            override fun onRemoveButtonClicked(post: Post) = viewModel.onRemoveButtonClicked(post)
+            override fun onView(post: Post) = viewModel.onView(post)
+        })
+
+        binding.list.adapter = adapter
+        viewModel.data.observe(this) { posts ->
+            adapter.submitList(posts)
+
+            // binding.list.smoothScrollToPosition(0)
+        }
+
+        viewModel.edited.observe(this) {
+            if (it.id != 0L) {
+                with (binding.content) {
+                    requestFocus()
+                    setText(it.content)
+                }
+                binding.editMessageGroup.visibility = View.VISIBLE
+                binding.editMessageContent.text = it.content
             }
         }
 
-        with(binding) {
-            views.setOnClickListener {
-                viewModel.onView()
-            }
-            likes.setOnClickListener {
-                viewModel.onLikeButtonClicked()
-            }
-            share.setOnClickListener {
-                viewModel.onShareButtonClicked()
-            }
-        }
-    }
+        binding.save.setOnClickListener {
+            with(binding.content) {
+                if (text.isNullOrBlank()) {
+                    Toast.makeText(this@MainActivity, R.string.error_empty_content, Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                viewModel.changeContent(text.toString())
+                viewModel.save()
 
-    fun optimalCount(count: Int): String? {
-       return when {
-           (count >= 1000) -> {
-               if ((count % 1000 < 100) || (count >= 100000)) {
-                   val exp = (Math.log(count.toDouble()) / Math.log(1000.0)).toInt()
-                   String.format(
-                       "%d %c",
-                       (count / Math.pow(1000.0, exp.toDouble())).toInt(),
-                       "kMGTPE"[exp - 1]
-                   )
-               } else {
-                   val exp = (Math.log(count.toDouble()) / Math.log(1000.0)).toInt()
-                   String.format(
-                       "%.1f %c",
-                       count / Math.pow(1000.0, exp.toDouble()),
-                       "kMGTPE"[exp - 1]
-                   )
-               }
-           }
-           else -> count.toString()
-       }
+                setText("")
+                clearFocus()
+                AndroidUtils.hideKeyboard(it)
+            }
+            binding.editMessageGroup.visibility = View.VISIBLE
+        }
+
+        binding.cancelEdition.setOnClickListener {
+            with(binding.content) {
+                viewModel.cancelEdit()
+                setText("")
+                clearFocus()
+                AndroidUtils.hideKeyboard(it)
+            }
+            binding.editMessageGroup.visibility = View.GONE
+        }
     }
 }

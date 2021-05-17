@@ -6,4 +6,10 @@
     <string name="likes_count">Likes count</string>
     <string name="share">Share</string>
     <string name="views">Views</string>
+    <string name="menu_remove">Remove</string>
+    <string name="save_description">Save description</string>
+    <string name="message_text">Message text</string>
+    <string name="error_empty_content">Error: message text is empty</string>
+    <string name="menu_edit">Edit</string>
+    <string name="edit_message_title">Edit message</string>
 </resources>
