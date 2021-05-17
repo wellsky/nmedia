@@ -134,15 +134,4 @@
 
         style="@style/ViewsIcon"
         />
-
-    <TextView
-        android:id="@+id/sharesCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/share"
-        app:layout_constraintStart_toEndOf="@+id/share"
-        app:layout_constraintTop_toTopOf="@+id/share"
-        />
 </androidx.constraintlayout.widget.ConstraintLayout>
