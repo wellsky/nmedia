@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 clearFocus()
                 AndroidUtils.hideKeyboard(it)
             }
-            binding.editMessageGroup.visibility = View.VISIBLE
+            binding.editMessageGroup.visibility = View.GONE
         }
 
         binding.cancelEdition.setOnClickListener {

@@ -36,18 +36,18 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            viewsCount.text = optimalCount(post.views)
-            likesCount.text = optimalCount(post.likes)
-            sharesCount.text = optimalCount(post.shares)
-            likes.setImageResource(if (post.likedByMe) R.drawable.ic_baseline_favorite_24 else R.drawable.ic_baseline_favorite_border_24)
+            views.text = optimalCount(post.views)
+            shares.text = optimalCount(post.shares)
+            like.text = optimalCount(post.likes)
+            like.isChecked = post.likedByMe
 
             views.setOnClickListener {
                 listener.onView(post)
             }
-            likes.setOnClickListener {
+            like.setOnClickListener {
                 listener.onLikeButtonClicked(post)
             }
-            share.setOnClickListener {
+            shares.setOnClickListener {
                 listener.onShareButtonClicked(post)
             }
             menu.setOnClickListener { it ->
