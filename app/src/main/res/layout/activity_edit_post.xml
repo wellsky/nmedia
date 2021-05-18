@@ -9,10 +9,10 @@
     <EditText
         android:id="@+id/editorText"
         android:layout_width="match_parent"
-        android:layout_height="673dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:padding="@dimen/common_spacing" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"

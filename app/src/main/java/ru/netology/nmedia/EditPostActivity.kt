@@ -4,7 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.databinding.ActivityEditPostBinding
+import ru.netology.nmedia.dto.Post
 
 class EditPostActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,6 +15,13 @@ class EditPostActivity : AppCompatActivity() {
         val binding = ActivityEditPostBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        intent?.let {
+            val text = it.getStringExtra(Intent.EXTRA_TEXT)
+
+            if (!text.isNullOrBlank()) {
+                binding.editorText.setText(text)
+            }
+        }
 
         binding.saveButton.setOnClickListener {
             val intent = Intent()
@@ -23,6 +33,10 @@ class EditPostActivity : AppCompatActivity() {
                 intent.putExtra(Intent.EXTRA_TEXT, content)
                 setResult(Activity.RESULT_OK, intent)
             }
+            finish()
+        }
+
+        binding.cancelButton.setOnClickListener {
             finish()
         }
     }
