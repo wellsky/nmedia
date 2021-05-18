@@ -12,4 +12,8 @@
     <string name="error_empty_content">Error: message text is empty</string>
     <string name="menu_edit">Edit</string>
     <string name="edit_message_title">Edit message</string>
+    <string name="share_message_title">Share post</string>
+    <string name="open_editor_title">Open post editor</string>
+    <string name="editor_save_button">Save</string>
+    <string name="editor_cancel_button">Cancel</string>
 </resources>

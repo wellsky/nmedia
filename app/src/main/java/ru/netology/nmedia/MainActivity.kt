@@ -1,8 +1,10 @@
 package ru.netology.nmedia
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.launch
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.nmedia.databinding.ActivityMainBinding
@@ -21,10 +23,21 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = PostAdapter(object : AdapterListener {
             override fun onLikeButtonClicked(post: Post) = viewModel.onLikeButtonClicked(post)
-            override fun onShareButtonClicked(post: Post) = viewModel.onShareButtonClicked(post)
             override fun onEditButtonClicked(post: Post) = viewModel.onEditButtonClicked(post)
             override fun onRemoveButtonClicked(post: Post) = viewModel.onRemoveButtonClicked(post)
             override fun onView(post: Post) = viewModel.onView(post)
+
+            override fun onShareButtonClicked(post: Post) {
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, post.content)
+                }
+                val shareIntent = Intent.createChooser(intent, getString(R.string.share_message_title))
+                startActivity(shareIntent)
+
+                //viewModel.onShareButtonClicked(post)
+            }
         })
 
         binding.list.adapter = adapter
@@ -69,6 +82,16 @@ class MainActivity : AppCompatActivity() {
                 AndroidUtils.hideKeyboard(it)
             }
             binding.editMessageGroup.visibility = View.GONE
+        }
+
+        val editPostLauncher = registerForActivityResult(EditPostResultContract()) { result ->
+            result?: return@registerForActivityResult
+            viewModel.changeContent(result)
+            viewModel.save()
+        }
+
+        binding.postEditorButton.setOnClickListener {
+            editPostLauncher.launch()
         }
     }
 }
