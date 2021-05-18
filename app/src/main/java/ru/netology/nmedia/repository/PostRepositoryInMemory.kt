@@ -1,10 +1,11 @@
 package ru.netology.nmedia.repository
 
+import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 
-class PostRepositoryInMemory: PostRepository {
+class PostRepositoryInMemory(): PostRepository {
     private var nextId = 1L
     override val data: MutableLiveData<List<Post>>
 
@@ -71,13 +72,6 @@ class PostRepositoryInMemory: PostRepository {
                 val newLikes = if (it.likedByMe) -1 else 1
                 it.copy(likes = it.likes + newLikes, likedByMe = !it.likedByMe)
             }
-        }
-        data.value = posts
-    }
-
-    override fun shareById(id: Long) {
-        val posts = data.value?.map {
-            if (it.id != id) it else it.copy(shares = it.shares + 1)
         }
         data.value = posts
     }
