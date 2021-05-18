@@ -1,5 +1,6 @@
 package ru.netology.nmedia
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
@@ -15,6 +16,7 @@ interface AdapterListener {
     fun onShareButtonClicked(post: Post)
     fun onRemoveButtonClicked(post: Post)
     fun onEditButtonClicked(post: Post)
+    fun onVideoPreviewClicked(post: Post)
 }
 
 class PostAdapter (private val listener: AdapterListener):ListAdapter<Post, PostViewHolder>(PostDiffCallback()) {
@@ -40,6 +42,14 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
             shares.text = optimalCount(post.shares)
             like.text = optimalCount(post.likes)
             like.isChecked = post.likedByMe
+
+            if (post.attachedVideo != null) {
+                videoPreview.visibility = View.VISIBLE
+
+                videoPreview.setOnClickListener {
+                    listener.onVideoPreviewClicked(post)
+                }
+            }
 
             views.setOnClickListener {
                 listener.onView(post)

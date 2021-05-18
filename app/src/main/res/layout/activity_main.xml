@@ -56,6 +56,14 @@
         app:layout_constraintTop_toTopOf="@+id/content"
         app:srcCompat="@drawable/ic_baseline_send_24" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/messageTextGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="save,content,toolsTop"
+        />
+
     <ImageButton
         android:id="@+id/cancelEdition"
         android:layout_width="wrap_content"
@@ -100,5 +108,18 @@
         android:visibility="gone"
         app:constraint_referenced_ids="cancelEdition, editMessageTitle, editMessageContent"
         />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/postEditorButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/common_spacing"
+        android:layout_marginEnd="@dimen/common_spacing"
+        android:layout_marginBottom="@dimen/common_spacing"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/list"
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="@string/open_editor_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

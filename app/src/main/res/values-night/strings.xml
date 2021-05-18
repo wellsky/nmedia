@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">NMedia</string>
+    <string name="app_title">NMedia!</string>
+    <string name="avatar_description">Avatar</string>
+    <string name="more_menu">More actions</string>
+    <string name="likes_count">Likes count</string>
+    <string name="share">Share</string>
+    <string name="views">Views</string>
     <string name="menu_remove">Remove</string>
     <string name="save_description">Save description</string>
     <string name="message_text">Message text</string>
+    <string name="error_empty_content">Error: message text is empty</string>
     <string name="menu_edit">Edit</string>
+    <string name="edit_message_title">Edit message</string>
+    <string name="share_message_title">Share post</string>
+    <string name="video_view_title">Open video</string>
+    <string name="open_editor_title">Open post editor</string>
+    <string name="editor_save_button">Save</string>
+    <string name="editor_cancel_button">Cancel</string>
 </resources>
