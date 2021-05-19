@@ -1,6 +1,5 @@
 package ru.netology.nmedia.repository
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
