@@ -25,7 +25,7 @@
         tools:layout="@layout/fragment_edit_post" />
     <fragment
         android:id="@+id/postDetailsFragment"
-        android:name="ru.netology.nmedia.postDetailsFragment"
+        android:name="ru.netology.nmedia.PostDetailsFragment"
         android:label="fragment_view_post"
         tools:layout="@layout/fragment_post_details" >
         <action

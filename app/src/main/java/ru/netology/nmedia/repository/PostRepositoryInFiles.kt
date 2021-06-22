@@ -27,6 +27,7 @@ class PostRepositoryInFiles(private val context: Context): PostRepository {
         }
 
         // Временно для тестирования Fragments посты создаются вручную
+        /*
         posts = listOf(
             Post(
                 id = nextId++,
@@ -60,8 +61,20 @@ class PostRepositoryInFiles(private val context: Context): PostRepository {
                 shares = 0
             )
         )
+        */
 
         data = MutableLiveData(posts)
+        nextId = getMaxPostId() + 1;
+    }
+
+    private fun getMaxPostId(): Long {
+        var lastId = 1L;
+        data.value?.forEach {
+            if (it.id > lastId) {
+                lastId = it.id
+            }
+        }
+        return lastId;
     }
 
     override fun getPostById(id: Long): Post? {

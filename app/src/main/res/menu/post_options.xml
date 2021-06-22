@@ -9,6 +9,6 @@
         android:id="@+id/menu_remove"
         android:title="@string/menu_remove" />
     <item
-        android:id="@+id/menu_view"
-        android:title="@string/menu_view" />
+        android:id="@+id/menu_details"
+        android:title="@string/menu_details" />
 </menu>

@@ -26,18 +26,8 @@ class EditPostFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
         val binding = FragmentEditPostBinding.inflate(layoutInflater)
-        //setContentView(binding.root)
 
         arguments?.textArg?.let(binding.editorText::setText)
-        /*
-        intent?.let {
-            val text = it.getStringExtra(Intent.EXTRA_TEXT)
-
-            if (!text.isNullOrBlank()) {
-                binding.editorText.setText(text)
-            }
-        }
-        */
 
         binding.saveButton.setOnClickListener {
             viewModel.changeContent(binding.editorText.text.toString())
@@ -45,27 +35,6 @@ class EditPostFragment : Fragment() {
             AndroidUtils.hideKeyboard(requireView())
             findNavController().navigateUp()
         }
-
-        /*
-        binding.saveButton.setOnClickListener {
-            val intent = Intent()
-
-            if (binding.editorText.text.isNullOrBlank()) {
-                setResult(Activity.RESULT_CANCELED, intent)
-            } else {
-                val content = binding.editorText.text.toString()
-                intent.putExtra(Intent.EXTRA_TEXT, content)
-                setResult(Activity.RESULT_OK, intent)
-            }
-            finish()
-        }
-        */
-
-        /*
-        binding.cancelButton.setOnClickListener {
-            finish()
-        }
-        */
 
         binding.cancelButton.setOnClickListener {
             findNavController().navigateUp()

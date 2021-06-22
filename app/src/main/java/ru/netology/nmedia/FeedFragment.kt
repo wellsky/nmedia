@@ -10,13 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.EditPostFragment.Companion.textArg
-import ru.netology.nmedia.postDetailsFragment.Companion.postId
+import ru.netology.nmedia.PostDetailsFragment.Companion.postId
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
-    val viewModel: PostViewModel by viewModels()
+    //val viewModel: PostViewModel by viewModels()
+    private val viewModel: PostViewModel by viewModels (
+        ownerProducer = ::requireParentFragment
+    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
@@ -37,12 +40,9 @@ class FeedFragment : Fragment() {
                 }
                 val shareIntent = Intent.createChooser(intent, getString(R.string.share_message_title))
                 startActivity(shareIntent)
-                //viewModel.onShareButtonClicked(post)
             }
 
             override fun onEditButtonClicked(post: Post) {
-                //viewModel.edited.value = post
-
                 viewModel.onEditButtonClicked(post)
 
                 findNavController().navigate(
@@ -51,9 +51,6 @@ class FeedFragment : Fragment() {
                         textArg = post.content
                     }
                 )
-
-
-                //editPostLauncher.launch(post.content)
             }
 
             override fun onViewButtonClicked(post: Post) {

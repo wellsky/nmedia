@@ -14,7 +14,7 @@ import ru.netology.nmedia.util.NMediaHelpers
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
-class postDetailsFragment : Fragment() {
+class PostDetailsFragment : Fragment() {
     companion object {
         var Bundle.postId: Long by LongArg
     }
@@ -26,10 +26,6 @@ class postDetailsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
         val binding = FragmentPostDetailsBinding.inflate(layoutInflater)
-
-
-        //binding.postFragment.avatar
-
 
         val postId = arguments?.postId
         val post = viewModel.repository.getPostById(postId!!)
@@ -59,10 +55,15 @@ class postDetailsFragment : Fragment() {
                     }
                 )
             }
-        }
 
-        binding.cancelButton.setOnClickListener {
-            findNavController().navigateUp()
+            binding.cancelButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
+
+            binding.removeButton.setOnClickListener {
+                viewModel.onRemoveButtonClicked(post)
+                findNavController().navigateUp()
+            }
         }
 
         return binding.root
