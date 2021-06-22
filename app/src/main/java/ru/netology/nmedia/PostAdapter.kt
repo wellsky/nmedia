@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.util.NMediaHelpers
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 interface AdapterListener {
@@ -16,6 +17,7 @@ interface AdapterListener {
     fun onShareButtonClicked(post: Post)
     fun onRemoveButtonClicked(post: Post)
     fun onEditButtonClicked(post: Post)
+    fun onViewButtonClicked(post: Post)
     fun onVideoPreviewClicked(post: Post)
 }
 
@@ -38,9 +40,9 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
             author.text = post.author
             published.text = post.published
             content.text = post.content
-            views.text = optimalCount(post.views)
-            shares.text = optimalCount(post.shares)
-            like.text = optimalCount(post.likes)
+            views.text = NMediaHelpers.optimalCount(post.views)
+            shares.text = NMediaHelpers.optimalCount(post.shares)
+            like.text = NMediaHelpers.optimalCount(post.likes)
             like.isChecked = post.likedByMe
 
             if (post.attachedVideo != null) {
@@ -73,34 +75,15 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
                                 listener.onEditButtonClicked(post)
                                 true
                             }
+                            R.id.menu_view -> {
+                                listener.onViewButtonClicked(post)
+                                true
+                            }
                             else -> false
                         }
                     }
                 }.show()
             }
-        }
-    }
-
-    fun optimalCount(count: Int): String {
-        return when {
-            (count >= 1000) -> {
-                if ((count % 1000 < 100) || (count >= 100000)) {
-                    val exp = (Math.log(count.toDouble()) / Math.log(1000.0)).toInt()
-                    String.format(
-                        "%d %c",
-                        (count / Math.pow(1000.0, exp.toDouble())).toInt(),
-                        "kMGTPE"[exp - 1]
-                    )
-                } else {
-                    val exp = (Math.log(count.toDouble()) / Math.log(1000.0)).toInt()
-                    String.format(
-                        "%.1f %c",
-                        count / Math.pow(1000.0, exp.toDouble()),
-                        "kMGTPE"[exp - 1]
-                    )
-                }
-            }
-            else -> count.toString()
         }
     }
 }

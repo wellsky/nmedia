@@ -18,4 +18,5 @@
     <string name="open_editor_title">Open post editor</string>
     <string name="editor_save_button">Save</string>
     <string name="editor_cancel_button">Cancel</string>
+    <string name="menu_view">View</string>
 </resources>

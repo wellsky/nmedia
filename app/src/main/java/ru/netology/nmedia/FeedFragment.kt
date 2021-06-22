@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.EditPostFragment.Companion.textArg
+import ru.netology.nmedia.ViewPostFragment.Companion.postId
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.util.AndroidUtils
@@ -51,6 +52,15 @@ class FeedFragment : Fragment() {
                 )
                 viewModel.onEditButtonClicked(post)
                 //editPostLauncher.launch(post.content)
+            }
+
+            override fun onViewButtonClicked(post: Post) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_viewPostFragment,
+                    Bundle().apply {
+                        postId = post.id
+                    }
+                )
             }
 
             override fun onVideoPreviewClicked(post: Post) {

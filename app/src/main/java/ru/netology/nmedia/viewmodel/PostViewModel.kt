@@ -12,7 +12,7 @@ import ru.netology.nmedia.repository.PostRepositorySharedPrefs
 private val empty = Post()
 
 class PostViewModel(application: Application): AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositoryInFiles(application)
+    val repository: PostRepository = PostRepositoryInFiles(application)
 
     val data by repository::data
     val edited = MutableLiveData(empty)
@@ -39,6 +39,10 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
 
     fun onEditButtonClicked(post: Post) {
         edited.value = post
+    }
+
+    fun onViewButtonClicked(post: Post) {
+
     }
 
     fun onLikeButtonClicked(post: Post) = repository.likeById(post.id)

@@ -56,6 +56,15 @@ class PostRepositoryInMemory(): PostRepository {
         )
     }
 
+    override fun getPostById(id: Long): Post? {
+        data.value?.map {
+            if (it.id == id) {
+                return it;
+            }
+        }
+        return null
+    }
+
     override fun viewById(id: Long) {
         val posts = data.value?.map {
             if (it.id != id) it else it.copy(views = it.views + 1)

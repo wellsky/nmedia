@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
 
 class PostRepositoryInFiles(private val context: Context): PostRepository {
@@ -24,7 +25,53 @@ class PostRepositoryInFiles(private val context: Context): PostRepository {
                 posts = gson.fromJson(it, type)
             }
         }
+/*
+        posts += Post(
+            id = nextId++,
+            author = "Владимир Андреевич",
+            content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+            published = "22 мая в 18:0",
+            avatar = R.mipmap.ic_launcher_round,
+            views = 0,
+            likes = 0,
+            shares = 0,
+            attachedVideo = "https://www.youtube.com/watch?v=WhWc3b3KhnY",
+        )
+
+        posts += Post(
+            id = nextId++,
+            author = "Второй автор с длинным именем и длинной фамилией",
+            content = "По отношению к языку лингвистический термин «текст» представляет собой единство значимых единиц речи — предложений. Наша речь состоит не только из слов как минимальных значимых единиц, а из предложений, которые объединяются в высказывание и образуют более крупную единицу речи — текст. Единство предложений в тексте оформляется общим содержанием и грамматически. С этой точки зрения дадим следующее определение, что такое текст.",
+            published = "22 мая в 18:0",
+            avatar = R.mipmap.ic_launcher_round,
+            views = 1,
+            likes = 9,
+            shares = 0,
+        )
+
+        posts +=  Post(
+            id = nextId++,
+            author = "Вася Пупкин",
+            content = "Небольшой текст третьего сообщения",
+            published = "23 мая в 18:0",
+            avatar = R.mipmap.ic_launcher_round,
+            views = 0,
+            likes = 0,
+            shares = 0
+        )
+ */
         data = MutableLiveData(posts)
+    }
+
+    override fun getPostById(id: Long): Post? {
+        //val post = data.value?.takeIf { it.id == id }
+        //return post
+        data.value?.map {
+            if (it.id == id) {
+                return it;
+            }
+        }
+        return null
     }
 
     override fun viewById(id: Long) {
