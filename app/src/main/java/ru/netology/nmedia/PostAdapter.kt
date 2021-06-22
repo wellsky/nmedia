@@ -37,7 +37,8 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
     fun bind(post: Post) {
         with (binding) {
             avatar.setImageResource(post.avatar)
-            author.text = post.author
+            //author.text = post.author
+            author.text = post.id.toString()
             published.text = post.published
             content.text = post.content
             views.text = NMediaHelpers.optimalCount(post.views)

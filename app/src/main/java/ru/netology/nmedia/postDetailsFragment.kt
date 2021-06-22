@@ -7,15 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.netology.nmedia.databinding.FragmentEditPostBinding
-import ru.netology.nmedia.databinding.FragmentViewPostBinding
-import ru.netology.nmedia.util.AndroidUtils
+import ru.netology.nmedia.EditPostFragment.Companion.textArg
+import ru.netology.nmedia.databinding.FragmentPostDetailsBinding
 import ru.netology.nmedia.util.LongArg
 import ru.netology.nmedia.util.NMediaHelpers
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 
-class ViewPostFragment : Fragment() {
+class postDetailsFragment : Fragment() {
     companion object {
         var Bundle.postId: Long by LongArg
     }
@@ -26,7 +25,7 @@ class ViewPostFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
-        val binding = FragmentViewPostBinding.inflate(layoutInflater)
+        val binding = FragmentPostDetailsBinding.inflate(layoutInflater)
 
 
         //binding.postFragment.avatar
@@ -49,19 +48,22 @@ class ViewPostFragment : Fragment() {
                     videoPreview.visibility = View.VISIBLE
                 }
             }
-        }
-        /*
-        binding.saveButton.setOnClickListener {
-            viewModel.changeContent(binding.editorText.text.toString())
-            viewModel.save()
-            AndroidUtils.hideKeyboard(requireView())
-            findNavController().navigateUp()
+
+            binding.editButton.setOnClickListener {
+                viewModel.onEditButtonClicked(post)
+
+                findNavController().navigate(
+                    R.id.action_viewPostFragment_to_editPostFragment,
+                    Bundle().apply {
+                        textArg = post.content
+                    }
+                )
+            }
         }
 
         binding.cancelButton.setOnClickListener {
             findNavController().navigateUp()
         }
-        */
 
         return binding.root
     }

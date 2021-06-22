@@ -19,4 +19,6 @@
     <string name="editor_save_button">Сохранить</string>
     <string name="editor_cancel_button">Отмена</string>
     <string name="menu_view">Просмотр</string>
+    <string name="editor_edit_button">Редактировать</string>
+    <string name="editor_remove_button">Удалить</string>
 </resources>

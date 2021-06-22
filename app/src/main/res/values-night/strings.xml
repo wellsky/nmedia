@@ -19,4 +19,6 @@
     <string name="editor_save_button">Save</string>
     <string name="editor_cancel_button">Cancel</string>
     <string name="menu_view">View</string>
+    <string name="editor_edit_button">Edit</string>
+    <string name="editor_remove_button">Delete</string>
 </resources>
