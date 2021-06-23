@@ -42,7 +42,6 @@ class PostViewHolder(val binding: PostItemBinding, val listener: AdapterListener
             published.text = post.published
             content.text = post.content
             views.text = NMediaHelpers.optimalCount(post.views)
-            shares.text = NMediaHelpers.optimalCount(post.shares)
             like.text = NMediaHelpers.optimalCount(post.likes)
             like.isChecked = post.likedByMe
 

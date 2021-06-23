@@ -31,14 +31,15 @@ class PostDetailsFragment : Fragment() {
         val post = viewModel.repository.getPostById(postId!!)
 
         if (post != null) {
-            with(binding.postFragment) {
+            with(binding) {
+                avatar.setImageResource(post.avatar)
                 author.text = post.author
                 published.text = post.published
                 content.text = post.content
-                views.text = NMediaHelpers.optimalCount(post.views)
-                shares.text = NMediaHelpers.optimalCount(post.shares)
-                like.text = NMediaHelpers.optimalCount(post.likes)
-                like.isChecked = post.likedByMe
+                //views.text = NMediaHelpers.optimalCount(post.views)
+                //shares.text = NMediaHelpers.optimalCount(post.shares)
+                //like.text = NMediaHelpers.optimalCount(post.likes)
+                //like.isChecked = post.likedByMe
 
                 if (post.attachedVideo != null) {
                     videoPreview.visibility = View.VISIBLE

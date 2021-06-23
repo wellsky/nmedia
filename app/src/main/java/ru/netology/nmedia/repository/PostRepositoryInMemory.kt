@@ -19,7 +19,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 10099997,
                     likes = 99,
-                    shares = 995
                 ),
                 Post(
                     id = nextId++,
@@ -29,7 +28,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 1,
                     likes = 9,
-                    shares = 0,
                 ),
                 Post(
                     id = nextId++,
@@ -39,7 +37,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 0,
                     likes = 0,
-                    shares = 0
                 ),
                 Post(
                     id = nextId++,
@@ -49,7 +46,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 0,
                     likes = 0,
-                    shares = 0,
                     attachedVideo = "https://www.youtube.com/watch?v=WhWc3b3KhnY",
                 ),
             ).reversed()
