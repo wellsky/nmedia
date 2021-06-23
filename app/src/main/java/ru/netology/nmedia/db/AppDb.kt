@@ -20,7 +20,7 @@ class AppDb private constructor (db:SQLiteDatabase){
         }
 
         private fun buildDatabase(context: Context, DDLs: Array<String>) = DbHelper(
-            context, 1, "app.db", DDLs,
+            context, 3, "app.db", DDLs,
         ).writableDatabase
     }
 }
@@ -35,11 +35,14 @@ class DbHelper(context: Context, dbVersion: Int, dbName: String, private val DDL
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        db.execSQL("DROP TABLE IF EXISTS posts")
+        DDLs.forEach {
+            db.execSQL(it)
+        }
     }
 
     override fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 
 }

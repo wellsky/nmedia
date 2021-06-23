@@ -29,7 +29,13 @@ class PostRepositorySQLite(private val dao: PostDao): PostRepository {
     }
 
     override fun viewById(id: Long) {
-        TODO("Not yet implemented")
+        dao.viewById(id)
+        val posts = data.value?.map {
+            if (it.id != id) it else it.copy(
+                views = it.views + 1
+            )
+        }
+        data.value = posts
     }
 
     override fun likeById(id: Long) {
