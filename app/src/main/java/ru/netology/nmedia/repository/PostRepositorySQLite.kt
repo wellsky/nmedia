@@ -6,7 +6,6 @@ import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
 
 class PostRepositorySQLite(private val dao: PostDao): PostRepository {
-    private var nextId = 1L
     override val data: MutableLiveData<List<Post>>
 
     init {
@@ -18,14 +17,13 @@ class PostRepositorySQLite(private val dao: PostDao): PostRepository {
         val saved = dao.save(post)
 
         val posts = if (id == 0L) {
-            listOf(saved) + post
+            listOf(saved) + data.value
         } else {
             data.value?.map {
                 if (it.id != id) it else saved
             }
         }
-
-        data.value = posts
+        //data.value = posts
     }
 
     override fun viewById(id: Long) {
