@@ -1,5 +1,7 @@
 package ru.netology.nmedia.dao
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.*
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
@@ -9,7 +11,7 @@ interface PostDao {
     fun getPostById(id: Long): Post
 
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-    fun getAll(): List<Post>
+    fun getAll(): MutableLiveData<List<PostEntity>>
 
     @Insert
     fun insert(post: PostEntity)
