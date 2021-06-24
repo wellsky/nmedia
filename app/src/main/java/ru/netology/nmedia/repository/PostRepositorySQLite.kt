@@ -17,13 +17,13 @@ class PostRepositorySQLite(private val dao: PostDao): PostRepository {
         val saved = dao.save(post)
 
         val posts = if (id == 0L) {
-            listOf(saved) + data.value
+            listOf(saved) + data.value as List<Post>
         } else {
             data.value?.map {
                 if (it.id != id) it else saved
             }
         }
-        //data.value = posts
+        data.value = posts
     }
 
     override fun viewById(id: Long) {
