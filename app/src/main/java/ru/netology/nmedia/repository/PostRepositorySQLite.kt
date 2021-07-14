@@ -16,10 +16,10 @@ class PostRepositorySQLite(private val dao: PostDao): PostRepository {
     }
 
     override fun getPostById(id: Long): Post? {
-        TODO("Not yet implemented")
+        return dao.getPostById(id)?.toDto()
     }
 
-    fun getAll() = Transformations.map(dao.getAll()) { list ->
+    override fun getAll() = Transformations.map(dao.getAll()) { list ->
         list.map {
             Post(it.id, it.author,it.content,it.published, 0, it.views, it.likes, it.likedByMe)
         }
@@ -30,7 +30,7 @@ class PostRepositorySQLite(private val dao: PostDao): PostRepository {
     }
 
     override fun viewById(id: Long) {
-        TODO("Not yet implemented")
+        dao.viewById(id)
     }
 
     override fun likeById(id: Long) {

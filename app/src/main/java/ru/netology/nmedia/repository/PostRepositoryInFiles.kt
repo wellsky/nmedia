@@ -1,6 +1,7 @@
 package ru.netology.nmedia.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -61,6 +62,8 @@ class PostRepositoryInFiles(private val context: Context): PostRepository {
         data = MutableLiveData(posts)
         nextId = getMaxPostId() + 1;
     }
+
+    override fun getAll(): LiveData<List<Post>> = data
 
     private fun getMaxPostId(): Long {
         var lastId = 1L;

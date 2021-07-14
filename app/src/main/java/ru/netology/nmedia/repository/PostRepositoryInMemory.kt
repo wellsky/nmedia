@@ -1,5 +1,6 @@
 package ru.netology.nmedia.repository
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
@@ -51,6 +52,8 @@ class PostRepositoryInMemory(): PostRepository {
             ).reversed()
         )
     }
+
+    override fun getAll(): LiveData<List<Post>> = data
 
     override fun getPostById(id: Long): Post? {
         data.value?.map {

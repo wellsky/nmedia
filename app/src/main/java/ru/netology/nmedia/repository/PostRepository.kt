@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 
 interface PostRepository {
     val data: LiveData<List<Post>>
+    fun getAll(): LiveData<List<Post>>
     fun save(post: Post)
     fun viewById(id: Long)
     fun likeById(id: Long)
