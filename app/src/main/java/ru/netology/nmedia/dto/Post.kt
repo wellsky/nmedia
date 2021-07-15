@@ -7,10 +7,9 @@ data class Post (
     val author: String = "",
     val content: String = "",
     val published: String = "",
-    val avatar: Int = R.mipmap.ic_launcher_round,
+    val avatar: Int = R.drawable.ic_user_avatar,
     val views: Int = 0,
     val likes: Int = 0,
-    val shares: Int = 0,
     val likedByMe: Boolean = false,
     val attachedVideo: String? = null
 )

@@ -1,6 +1,7 @@
 package ru.netology.nmedia.repository
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -23,6 +24,17 @@ class PostRepositorySharedPrefs(private val context: Context): PostRepository {
             posts = gson.fromJson(it, type)
         }
         data = MutableLiveData(posts)
+    }
+
+    override fun getAll(): LiveData<List<Post>> = data
+
+    override fun getPostById(id: Long): Post? {
+        data.value?.map {
+            if (it.id == id) {
+                return it;
+            }
+        }
+        return null
     }
 
     override fun viewById(id: Long) {

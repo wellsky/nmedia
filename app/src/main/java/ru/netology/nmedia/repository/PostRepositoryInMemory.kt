@@ -1,6 +1,6 @@
 package ru.netology.nmedia.repository
 
-import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import ru.netology.nmedia.R
 import ru.netology.nmedia.dto.Post
@@ -20,7 +20,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 10099997,
                     likes = 99,
-                    shares = 995
                 ),
                 Post(
                     id = nextId++,
@@ -30,7 +29,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 1,
                     likes = 9,
-                    shares = 0,
                 ),
                 Post(
                     id = nextId++,
@@ -40,7 +38,6 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 0,
                     likes = 0,
-                    shares = 0
                 ),
                 Post(
                     id = nextId++,
@@ -50,11 +47,21 @@ class PostRepositoryInMemory(): PostRepository {
                     avatar = R.mipmap.ic_launcher_round,
                     views = 0,
                     likes = 0,
-                    shares = 0,
                     attachedVideo = "https://www.youtube.com/watch?v=WhWc3b3KhnY",
                 ),
             ).reversed()
         )
+    }
+
+    override fun getAll(): LiveData<List<Post>> = data
+
+    override fun getPostById(id: Long): Post? {
+        data.value?.map {
+            if (it.id == id) {
+                return it;
+            }
+        }
+        return null
     }
 
     override fun viewById(id: Long) {
