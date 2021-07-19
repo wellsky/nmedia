@@ -21,6 +21,7 @@ class FCMService : FirebaseMessagingService() {
     private val content = "content"
     private val channelId = "remote"
     private val gson = Gson()
+    
 
     override fun onCreate() {
         super.onCreate()
