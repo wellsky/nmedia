@@ -2,7 +2,10 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id "org.jetbrains.kotlin.kapt"
+    id 'com.google.gms.google-services'
 }
+
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -58,6 +61,8 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation "androidx.room:room-runtime:$room_version"
+    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     kapt "androidx.room:room-compiler:$room_version"
     testImplementation 'junit:junit:4.13.2'
     testImplementation "androidx.arch.core:core-testing:$arch_version"

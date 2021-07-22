@@ -21,4 +21,8 @@
     <string name="menu_details">Details</string>
     <string name="editor_edit_button">Edit</string>
     <string name="editor_remove_button">Delete</string>
+    <string name="channel_remote_name">Server notifications</string>
+    <string name="channel_remote_description">Notifications from remote server</string>
+    <string name="notification_user_liked">%1$s liked post %2$s</string>
+    <string name="notification_user_posted">%1$s published new post:</string>
 </resources>
