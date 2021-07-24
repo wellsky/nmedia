@@ -28,28 +28,28 @@ class FeedFragment : Fragment() {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val adapter = PostsAdapter(object : OnInteractionListener {
-            override fun onLike(post: Post) = viewModel.likeById(post.id)
-            override fun onRemove(post: Post) = viewModel.removeById(post.id)
+            override fun onEdit(post: Post) {
+                viewModel.edit(post)
+            }
+
+            override fun onLike(post: Post) {
+                viewModel.likeById(post.id)
+            }
+
+            override fun onRemove(post: Post) {
+                viewModel.removeById(post.id)
+            }
 
             override fun onShare(post: Post) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
-                    type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, post.content)
+                    type = "text/plain"
                 }
-                val shareIntent = Intent.createChooser(intent, getString(R.string.share_message_title))
+
+                val shareIntent =
+                    Intent.createChooser(intent, getString(R.string.share_message_title))
                 startActivity(shareIntent)
-            }
-
-            override fun onEdit(post: Post) {
-                viewModel.edit(post)
-
-                findNavController().navigate(
-                    R.id.action_feedFragment_to_editPostFragment,
-                    Bundle().apply {
-                        textArg = post.content
-                    }
-                )
             }
         })
 
