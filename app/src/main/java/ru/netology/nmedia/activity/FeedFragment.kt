@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
+import ru.netology.nmedia.activity.PostDetailsFragment.Companion.postId
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
@@ -30,10 +32,20 @@ class FeedFragment : Fragment() {
         val adapter = PostsAdapter(object : OnInteractionListener {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                findNavController().navigate(R.id.action_feedFragment_to_editPostFragment)
             }
 
-            override fun onLike(post: Post) {
-                viewModel.likeById(post.id)
+            override fun onDetails(post: Post) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_viewPostFragment,
+                    Bundle().apply {
+                        postId = post.id
+                    }
+                )
+            }
+
+            override fun onLike(post: Post, like: Boolean) {
+                viewModel.likeById(post.id, like)
             }
 
             override fun onRemove(post: Post) {
@@ -56,13 +68,23 @@ class FeedFragment : Fragment() {
         binding.list.adapter = adapter
         viewModel.data.observe(viewLifecycleOwner, { state ->
             adapter.submitList(state.posts)
-            //binding.progress.isVisible = state.loading
-            //binding.errorGroup.isVisible = state.error
-            //binding.emptyText.isVisible = state.empty
+            binding.progress.isVisible = state.loading
+            binding.errorGroup.isVisible = state.error
+            binding.emptyText.isVisible = state.empty
         })
+
+        binding.retryButton.setOnClickListener {
+            viewModel.loadPosts()
+        }
 
         binding.postEditorButton.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment_to_editPostFragment)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            binding.swiperefresh.setRefreshing(false)
+            binding.progress.isVisible = true
+            viewModel.loadPosts()
         }
 
         return binding.root

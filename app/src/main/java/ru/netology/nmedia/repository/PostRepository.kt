@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 interface PostRepository {
     fun getAll(): List<Post>
     fun getById(id: Long): Post
-    fun likeById(id: Long)
+    fun likeById(id: Long, like: Boolean)
     fun save(post: Post)
     fun removeById(id: Long)
 }

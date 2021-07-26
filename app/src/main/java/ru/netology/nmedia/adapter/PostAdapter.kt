@@ -11,8 +11,9 @@ import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.dto.Post
 
 interface OnInteractionListener {
-    fun onLike(post: Post) {}
+    fun onLike(post: Post, like: Boolean) {}
     fun onEdit(post: Post) {}
+    fun onDetails(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
 }
@@ -47,15 +48,19 @@ class PostViewHolder(
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
-                    inflate(R.menu.options_post)
+                    inflate(R.menu.post_options)
                     setOnMenuItemClickListener { item ->
                         when (item.itemId) {
-                            R.id.remove -> {
+                            R.id.menu_remove -> {
                                 onInteractionListener.onRemove(post)
                                 true
                             }
-                            R.id.edit -> {
+                            R.id.menu_edit -> {
                                 onInteractionListener.onEdit(post)
+                                true
+                            }
+                            R.id.menu_details -> {
+                                onInteractionListener.onDetails(post)
                                 true
                             }
 
@@ -66,7 +71,11 @@ class PostViewHolder(
             }
 
             like.setOnClickListener {
-                onInteractionListener.onLike(post)
+                if (like.isChecked) {
+                    onInteractionListener.onLike(post, true)
+                } else {
+                    onInteractionListener.onLike(post, false)
+                }
             }
 
             share.setOnClickListener {

@@ -20,7 +20,7 @@ private val empty = Post(
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
     // упрощённый вариант
-    private val repository: PostRepository = PostRepositoryServer()
+    private val repository: PostRepository = PostRepositoryServerImpl()
     private val _data = MutableLiveData(FeedModel())
     val data: LiveData<FeedModel>
         get() = _data
@@ -33,13 +33,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         loadPosts()
     }
 
-    fun getById(id :Long): Post {
-        return Post()
-        /*
-        thread {
-          return repository.getById(id)
+    fun getById(id :Long): Post? {
+        data.value?.posts?.map {
+            if (it.id == id) {
+                return it;
+            }
         }
-        */
+        return null
     }
 
     fun loadPosts() {
@@ -79,8 +79,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         edited.value = edited.value?.copy(content = text)
     }
 
-    fun likeById(id: Long) {
-        thread { repository.likeById(id) }
+    fun likeById(id: Long, like: Boolean) {
+        thread {
+            repository.likeById(id, like)
+        }
     }
 
     fun removeById(id: Long) {

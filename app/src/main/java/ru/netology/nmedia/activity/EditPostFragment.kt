@@ -31,10 +31,12 @@ class EditPostFragment : Fragment() {
             viewModel.changeContent(binding.editorText.text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
+            viewModel.loadPosts()
             findNavController().navigateUp()
         }
 
         binding.cancelButton.setOnClickListener {
+            viewModel.loadPosts()
             findNavController().navigateUp()
         }
 
