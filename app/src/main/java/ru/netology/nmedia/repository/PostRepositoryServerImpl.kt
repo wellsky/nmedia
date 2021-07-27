@@ -18,6 +18,7 @@ class PostRepositoryServerImpl: PostRepository {
         .build()
     private val gson = Gson()
     private val typeToken = object : TypeToken<List<Post>>() {}
+    private val typePost = object : TypeToken<Post>() {}
 
     companion object {
         private const val BASE_URL = "http://10.0.2.2:9999"
@@ -46,7 +47,7 @@ class PostRepositoryServerImpl: PostRepository {
             .execute()
             .let { it.body?.string() ?: throw RuntimeException("body is null") }
             .let {
-                gson.fromJson(it, typeToken.type)
+                gson.fromJson(it, typePost.type)
             }
     }
 
