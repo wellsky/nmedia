@@ -24,4 +24,7 @@
     <string name="channel_remote_description">Notifications from remote server</string>
     <string name="notification_user_liked">%1$s liked post %2$s</string>
     <string name="notification_user_posted">%1$s published new post:</string>
+    <string name="empty_posts">No posts in this list</string>
+    <string name="error_loading">Posts loading failed</string>
+    <string name="retry_loading">Retry posts loading</string>
 </resources>

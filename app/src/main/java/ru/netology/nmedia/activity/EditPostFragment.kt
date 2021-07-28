@@ -1,7 +1,5 @@
-package ru.netology.nmedia
+package ru.netology.nmedia.activity
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,10 +31,12 @@ class EditPostFragment : Fragment() {
             viewModel.changeContent(binding.editorText.text.toString())
             viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
+            viewModel.loadPosts()
             findNavController().navigateUp()
         }
 
         binding.cancelButton.setOnClickListener {
+            viewModel.loadPosts()
             findNavController().navigateUp()
         }
 
