@@ -25,7 +25,8 @@ class EditPostFragment : Fragment() {
         super.onCreate(savedInstanceState)
         val binding = FragmentEditPostBinding.inflate(layoutInflater)
 
-        arguments?.textArg?.let(binding.editorText::setText)
+        //arguments?.textArg?.let(binding.editorText::setText)
+        binding.editorText.setText(viewModel.edited.value?.content ?: "")
 
         binding.saveButton.setOnClickListener {
             viewModel.changeContent(binding.editorText.text.toString())
