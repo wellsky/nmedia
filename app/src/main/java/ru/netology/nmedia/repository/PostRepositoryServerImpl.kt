@@ -22,6 +22,8 @@ class PostRepositoryServerImpl: PostRepository {
     companion object {
         private const val BASE_URL = "http://10.0.2.2:9999"
         private val jsonType = "application/json".toMediaType()
+
+        const val AVATARS_FOLDER_URL = "http://10.0.2.2:9999/avatars/"
     }
 
     override fun getAll(): List<Post> {
