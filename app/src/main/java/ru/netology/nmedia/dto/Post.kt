@@ -7,7 +7,7 @@ data class Post (
     val author: String = "",
     val content: String = "",
     val published: String = "",
-    val avatar: Int = R.drawable.ic_user_avatar,
+    val authorAvatar: String = "",
     val views: Int = 0,
     val likes: Int = 0,
     val likedByMe: Boolean = false,

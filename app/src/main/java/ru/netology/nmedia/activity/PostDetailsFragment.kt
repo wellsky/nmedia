@@ -32,7 +32,7 @@ class PostDetailsFragment : Fragment() {
 
         if (post != null) {
             with(binding) {
-                avatar.setImageResource(post.avatar)
+                //avatar.setImageResource(post.authorAvatar)
                 author.text = post.author
                 published.text = post.published
                 content.text = post.content

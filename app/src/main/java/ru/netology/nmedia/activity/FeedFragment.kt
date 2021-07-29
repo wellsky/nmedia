@@ -78,6 +78,7 @@ class FeedFragment : Fragment() {
         }
 
         binding.postEditorButton.setOnClickListener {
+            viewModel.stopEdit()
             findNavController().navigate(R.id.action_feedFragment_to_editPostFragment)
         }
 

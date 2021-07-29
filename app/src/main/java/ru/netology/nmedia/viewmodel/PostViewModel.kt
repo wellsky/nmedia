@@ -43,21 +43,33 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun loadPosts() {
-        thread {
-            // Начинаем загрузку
-            _data.postValue(FeedModel(loading = true))
-            try {
-                // Данные успешно получены
-                val posts = repository.getAll()
-                FeedModel(posts = posts, empty = posts.isEmpty())
-            } catch (e: IOException) {
-                // Получена ошибка
-                FeedModel(error = true)
-            }.also(_data::postValue)
-        }
+        repository.getAllAsync(object: PostRepository.GetAllCallback {
+            override fun onSuccess(posts: List<Post>) {
+                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            }
+
+            override fun onError(e: Exception) {
+                _data.postValue(FeedModel(error = true))
+            }
+
+        })
     }
 
     fun save() {
+        edited.value?.let {
+            repository.saveAsync(it, object : PostRepository.SaveCallback {
+                override fun onSuccess() {
+                    // Успешно сохранен
+                    _postCreated.postValue(Unit)
+                }
+
+                override fun onError(e: Exception) {
+                    _data.postValue(FeedModel(error = true))
+                }
+
+            })
+        }
+        /*
         edited.value?.let {
             thread {
                 repository.save(it)
@@ -65,10 +77,15 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
         edited.value = empty
+         */
     }
 
     fun edit(post: Post) {
         edited.value = post
+    }
+
+    fun stopEdit() {
+        edited.value = empty
     }
 
     fun changeContent(content: String) {
@@ -80,6 +97,25 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun likeById(id: Long, like: Boolean) {
+
+            repository.likeByIdAsync(id, like, object : PostRepository.LikeByIdCallback {
+                override fun onSuccess() {
+                    // Успешно сохранен
+                    _data.postValue(_data.value?.copy(posts = _data.value?.posts.orEmpty().map {
+                        if (it.id != id) it else it.copy(
+                            likedByMe = !it.likedByMe,
+                            likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
+                        )
+                    }))
+                }
+
+                override fun onError(e: Exception) {
+                    _data.postValue(FeedModel(error = true))
+                }
+
+            })
+
+        /*
         thread {
             val old = _data.value?.posts.orEmpty()
 
@@ -96,9 +132,25 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         }
+        */
     }
 
     fun removeById(id: Long) {
+        val old = _data.value?.posts.orEmpty()
+        repository.removeByIdAsync(id, object: PostRepository.RemoveByIdCallback {
+            override fun onSuccess() {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .filter { it.id != id }
+                    )
+                )
+            }
+
+            override fun onError(e: Exception) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        })
+    /*
         thread {
             // Оптимистичная модель
             val old = _data.value?.posts.orEmpty()
@@ -113,5 +165,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         }
+         */
     }
 }
