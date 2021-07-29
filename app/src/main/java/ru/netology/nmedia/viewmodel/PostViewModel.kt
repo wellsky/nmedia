@@ -69,15 +69,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             })
         }
-        /*
-        edited.value?.let {
-            thread {
-                repository.save(it)
-                _postCreated.postValue(Unit)
-            }
-        }
-        edited.value = empty
-         */
     }
 
     fun edit(post: Post) {
@@ -114,25 +105,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
             })
-
-        /*
-        thread {
-            val old = _data.value?.posts.orEmpty()
-
-            _data.postValue(_data.value?.copy(posts = _data.value?.posts.orEmpty().map {
-                if (it.id != id) it else it.copy(
-                    likedByMe = !it.likedByMe,
-                    likes = if (it.likedByMe) it.likes - 1 else it.likes + 1
-                )
-            }))
-
-            try {
-                repository.likeById(id, like)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
-        }
-        */
     }
 
     fun removeById(id: Long) {
@@ -150,21 +122,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
         })
-    /*
-        thread {
-            // Оптимистичная модель
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
-            )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
-                _data.postValue(_data.value?.copy(posts = old))
-            }
-        }
-         */
     }
 }
