@@ -1,8 +1,11 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.FeedError
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.repository.*
 import ru.netology.nmedia.util.SingleLiveEvent
@@ -50,7 +53,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.value = FeedModel(error = true)
+                _data.value = FeedModel(error = FeedError.ERROR_LOAD)
             }
         })
     }
@@ -62,27 +65,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     _postCreated.postValue(Unit)
                 }
                 override fun onError(e: Exception) {
-                    _data.postValue(FeedModel(error = true))
+                    _data.postValue(FeedModel(error = FeedError.ERROR_SAVE))
                 }
             })
         }
         edited.value = empty
-    }
-
-    fun edit(post: Post) {
-        edited.value = post
-    }
-
-    fun stopEdit() {
-        edited.value = empty
-    }
-
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
-            return
-        }
-        edited.value = edited.value?.copy(content = text)
     }
 
     fun likeById(id: Long, like: Boolean) {
@@ -98,7 +85,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 }
 
                 override fun onError(e: Exception) {
-                    _data.postValue(FeedModel(error = true))
+                    _data.postValue(FeedModel(error = FeedError.ERROR_LIKE))
                 }
 
             })
@@ -116,8 +103,24 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(posts = old))
+                _data.postValue(_data.value?.copy(posts = old, error = FeedError.ERROR_REMOVE))
             }
         })
+    }
+
+    fun edit(post: Post) {
+        edited.value = post
+    }
+
+    fun stopEdit() {
+        edited.value = empty
+    }
+
+    fun changeContent(content: String) {
+        val text = content.trim()
+        if (edited.value?.content == text) {
+            return
+        }
+        edited.value = edited.value?.copy(content = text)
     }
 }

@@ -35,7 +35,7 @@ class PostRepositoryServerImpl: PostRepository {
             }
 
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                TODO("Not yet implemented")
+                callback.onError(RuntimeException("Error loading posts"))
             }
         })
 
@@ -92,7 +92,7 @@ class PostRepositoryServerImpl: PostRepository {
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                TODO("Not yet implemented")
+                callback.onError(RuntimeException("Error removing post"))
             }
         })
     }

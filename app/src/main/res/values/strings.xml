@@ -27,4 +27,8 @@
     <string name="empty_posts">No posts in this list</string>
     <string name="error_loading">Posts loading failed</string>
     <string name="retry_loading">Retry posts loading</string>
+    <string name="error_post_remove">Error removing post</string>
+    <string name="error_post_save">Error saving post</string>
+    <string name="error_post_like">Error updating post</string>
+    <string name="close_snackbar">Close</string>
 </resources>
