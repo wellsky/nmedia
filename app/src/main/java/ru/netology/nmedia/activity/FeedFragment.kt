@@ -17,7 +17,6 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.model.FeedError
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -68,44 +67,24 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
+        viewModel.dataState.observe(viewLifecycleOwner, { state ->
+            binding.progress.isVisible = state.loading
+            binding.swiperefresh.isRefreshing = state.refreshing
+
+            binding.retryTitle.isVisible = state.error
+            binding.retryButton.isVisible = state.error
+
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.retry_loading) { viewModel.loadPosts() }
+                    .show()
+            }
+        })
         viewModel.data.observe(viewLifecycleOwner, { state ->
             adapter.submitList(state.posts)
-            binding.progress.isVisible = state.loading
             binding.emptyText.isVisible = state.empty
-
-            binding.errorGroup.isVisible = false
-
-            when (state.error) {
-                FeedError.ERROR_LOAD -> {
-                    binding.errorGroup.isVisible = true
-                }
-
-                FeedError.ERROR_REMOVE -> {
-                    Snackbar.make(requireView(), R.string.error_post_remove, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.close_snackbar) {
-                            // Responds to click on the action
-                        }
-                        .show()
-                }
-
-                FeedError.ERROR_SAVE -> {
-                    Snackbar.make(requireView(), R.string.error_post_save, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.close_snackbar) {
-                            // Responds to click on the action
-                        }
-                        .show()
-                }
-
-                FeedError.ERROR_LIKE -> {
-                    Snackbar.make(requireView(), R.string.error_post_like, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.close_snackbar) {
-                            // Responds to click on the action
-                        }
-                        .show()
-                }
-            }
-
         })
+
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
