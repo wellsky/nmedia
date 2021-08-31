@@ -28,4 +28,8 @@
     <string name="empty_posts">В этом списке нет сообщений</string>
     <string name="error_loading">Не удалось загрузить сообщения</string>
     <string name="retry_loading">Повторить попытку загрузки сообщений</string>
+    <string name="error_post_remove">Ошибка при удалении сообщения</string>
+    <string name="error_post_save">Ошибка при сохранении сообщения</string>
+    <string name="error_post_like">Ошибка при обновлении сообщения</string>
+    <string name="close_snackbar">Закрыть</string>
 </resources>

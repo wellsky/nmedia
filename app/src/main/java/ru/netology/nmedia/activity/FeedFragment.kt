@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
 import ru.netology.nmedia.activity.PostDetailsFragment.Companion.postId
@@ -16,6 +17,7 @@ import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.model.FeedError
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -69,8 +71,40 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner, { state ->
             adapter.submitList(state.posts)
             binding.progress.isVisible = state.loading
-            binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
+
+            binding.errorGroup.isVisible = false
+
+            when (state.error) {
+                FeedError.ERROR_LOAD -> {
+                    binding.errorGroup.isVisible = true
+                }
+
+                FeedError.ERROR_REMOVE -> {
+                    Snackbar.make(requireView(), R.string.error_post_remove, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.close_snackbar) {
+                            // Responds to click on the action
+                        }
+                        .show()
+                }
+
+                FeedError.ERROR_SAVE -> {
+                    Snackbar.make(requireView(), R.string.error_post_save, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.close_snackbar) {
+                            // Responds to click on the action
+                        }
+                        .show()
+                }
+
+                FeedError.ERROR_LIKE -> {
+                    Snackbar.make(requireView(), R.string.error_post_like, Snackbar.LENGTH_INDEFINITE)
+                        .setAction(R.string.close_snackbar) {
+                            // Responds to click on the action
+                        }
+                        .show()
+                }
+            }
+
         })
 
         binding.retryButton.setOnClickListener {
