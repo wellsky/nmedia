@@ -87,11 +87,7 @@ class PostViewHolder(
             }
 
             like.setOnClickListener {
-                if (like.isChecked) {
-                    onInteractionListener.onLike(post, true)
-                } else {
-                    onInteractionListener.onLike(post, false)
-                }
+                onInteractionListener.onLike(post, like.isChecked) // В этой строке isChecked уже изменился после нажатия!!
             }
 
             share.setOnClickListener {

@@ -98,7 +98,7 @@ class FeedFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener {
             binding.swiperefresh.setRefreshing(false)
             binding.progress.isVisible = true
-            viewModel.loadPosts()
+            viewModel.refreshPosts()
         }
 
         return binding.root
