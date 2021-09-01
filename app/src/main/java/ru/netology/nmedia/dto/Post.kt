@@ -1,15 +1,12 @@
 package ru.netology.nmedia.dto
 
-import ru.netology.nmedia.R
-
-data class Post (
-    val id: Long = 0,
-    val author: String = "",
-    val content: String = "",
-    val published: String = "",
-    val authorAvatar: String = "",
-    val views: Int = 0,
+data class Post(
+    val id: Long,
+    val author: String,
+    val authorAvatar: String,
+    val content: String,
+    val published: String,
+    val likedByMe: Boolean,
     val likes: Int = 0,
-    val likedByMe: Boolean = false,
-    val attachedVideo: String? = null
+    val views: Int = 0
 )

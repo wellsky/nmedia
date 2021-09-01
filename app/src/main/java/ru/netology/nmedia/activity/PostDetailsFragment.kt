@@ -36,10 +36,6 @@ class PostDetailsFragment : Fragment() {
                 author.text = post.author
                 published.text = post.published
                 content.text = post.content
-
-                if (post.attachedVideo != null) {
-                    videoPreview.visibility = View.VISIBLE
-                }
             }
 
             binding.editButton.setOnClickListener {
