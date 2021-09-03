@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
 import ru.netology.nmedia.activity.PostDetailsFragment.Companion.postId
@@ -67,6 +71,7 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
+
         viewModel.dataState.observe(viewLifecycleOwner, { state ->
             binding.progress.isVisible = state.loading
             binding.swiperefresh.isRefreshing = state.refreshing
@@ -80,11 +85,25 @@ class FeedFragment : Fragment() {
                     .show()
             }
         })
+
         viewModel.data.observe(viewLifecycleOwner, { state ->
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
         })
 
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            binding.newPostsButton.isVisible = true
+            println("New posts count: $id")
+        }
+
+        binding.newPostsButton.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.setAllPostsVisible().join() // С join не работает
+                //delay(1000L) // С задержкой работает
+                binding.list.smoothScrollToPosition(0)
+                it.isVisible = false
+            }
+        }
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
