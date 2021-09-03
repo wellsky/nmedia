@@ -98,10 +98,12 @@ class FeedFragment : Fragment() {
 
         binding.newPostsButton.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.setAllPostsVisible().join() // С join не работает
-                //delay(1000L) // С задержкой работает
-                binding.list.smoothScrollToPosition(0)
-                it.isVisible = false
+                viewModel.setAllPostsVisible().join()
+                adapter.submitList(viewModel.data.value?.posts) {
+                    it.isVisible = false
+                    binding.list.smoothScrollToPosition(0)
+                }
+
             }
         }
 
