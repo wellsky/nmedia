@@ -25,6 +25,8 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
     //val viewModel: PostViewModel by viewModels()
+    private var scrollToTop = false
+
     private val viewModel: PostViewModel by viewModels (
         ownerProducer = ::requireParentFragment
     )
@@ -87,7 +89,12 @@ class FeedFragment : Fragment() {
         })
 
         viewModel.data.observe(viewLifecycleOwner, { state ->
-            adapter.submitList(state.posts)
+            adapter.submitList(state.posts) {
+                if (scrollToTop) {
+                    binding.list.smoothScrollToPosition(0)
+                    scrollToTop = false;
+                }
+            }
             binding.emptyText.isVisible = state.empty
         })
 
@@ -99,11 +106,8 @@ class FeedFragment : Fragment() {
         binding.newPostsButton.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.setAllPostsVisible().join()
-                adapter.submitList(viewModel.data.value?.posts) {
-                    it.isVisible = false
-                    binding.list.smoothScrollToPosition(0)
-                }
-
+                scrollToTop = true
+                it.isVisible = false
             }
         }
 
@@ -119,6 +123,7 @@ class FeedFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener {
             binding.swiperefresh.setRefreshing(false)
             binding.progress.isVisible = true
+            binding.newPostsButton.isVisible = false
             viewModel.refreshPosts()
         }
 
