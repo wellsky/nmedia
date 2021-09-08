@@ -22,31 +22,33 @@
         android:paddingRight="@dimen/common_spacing"
         android:layout_gravity="bottom">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <Button
-                android:id="@+id/saveButton"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pickPhoto"
+                style="@style/Widget.AppTheme.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@string/editor_save_button" />
+                android:contentDescription="@string/description_select_photo"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/ic_photo_24dp" />
 
-            <Button
-                android:id="@+id/cancelButton"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/takePhoto"
+                style="@style/Widget.AppTheme.IconButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@string/editor_cancel_button"
-                android:textColor="@color/white" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                android:contentDescription="@string/description_take_photo"
+                android:padding="@dimen/common_spacing"
+                app:icon="@drawable/ic_camera_24dp" />
+        </LinearLayout>
     </com.google.android.material.bottomappbar.BottomAppBar>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
