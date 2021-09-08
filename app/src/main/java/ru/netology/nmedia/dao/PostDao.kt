@@ -3,6 +3,7 @@ package ru.netology.nmedia.dao
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
 
@@ -11,8 +12,11 @@ interface PostDao {
     @Query("SELECT * FROM PostEntity WHERE id = :id")
     suspend fun getPostById(id: Long): PostEntity?
 
-    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
-    fun getAll(): LiveData<List<PostEntity>>
+    @Query("SELECT * FROM PostEntity WHERE isVisible = 1 ORDER BY id DESC")
+    fun getAll(): Flow<List<PostEntity>>
+
+    @Query("UPDATE PostEntity SET isVisible = 1")
+    suspend fun setAllVisible()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(post: PostEntity)

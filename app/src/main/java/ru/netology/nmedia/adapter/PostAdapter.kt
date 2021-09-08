@@ -57,10 +57,10 @@ class PostViewHolder(
             Glide.with(avatar.context)
                 .load(url)
                 .circleCrop()
+                .timeout(10_000)
                 .placeholder(R.drawable.ic_loading_100dp)
                 .error(R.drawable.ic_error_100dp)
                 .into(avatar)
-
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {

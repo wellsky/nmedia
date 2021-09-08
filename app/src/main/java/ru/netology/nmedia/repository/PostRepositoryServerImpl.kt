@@ -1,6 +1,12 @@
 package ru.netology.nmedia.repository
 
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import okio.IOException
 import ru.netology.nmedia.api.*
 import ru.netology.nmedia.dao.PostDao
@@ -13,7 +19,7 @@ import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 
 class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
-    override val data = dao.getAll().map(List<PostEntity>::toDto)
+    override val data: Flow<List<Post>> = dao.getAll().map(List<PostEntity>::toDto).flowOn(Dispatchers.Default)
 
     companion object {
         const val AVATARS_FOLDER_URL = "http://10.0.2.2:9999/avatars/"
@@ -28,11 +34,16 @@ class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
 
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(body.toEntity())
+            dao.setAllVisible()
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
         }
+    }
+
+    override suspend fun setAllPostsVisible() {
+        dao.setAllVisible()
     }
 
     override suspend fun save(post: Post) {
@@ -79,6 +90,20 @@ class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
             throw NetworkError
         } catch (e: Exception) {
             throw UnknownError
+        }
+    }
+
+    override fun getNewerCount(id: Long): Flow<Int> = flow {
+        while (true) {
+            delay(5_000L)
+            val response = PostsApi.service.getNewer(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(body.toEntity())
+            emit(body.size)
         }
     }
 }

@@ -8,8 +8,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
 import ru.netology.nmedia.activity.PostDetailsFragment.Companion.postId
@@ -21,6 +25,8 @@ import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
     //val viewModel: PostViewModel by viewModels()
+    private var scrollToTop = false
+
     private val viewModel: PostViewModel by viewModels (
         ownerProducer = ::requireParentFragment
     )
@@ -67,6 +73,7 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
+
         viewModel.dataState.observe(viewLifecycleOwner, { state ->
             binding.progress.isVisible = state.loading
             binding.swiperefresh.isRefreshing = state.refreshing
@@ -80,11 +87,31 @@ class FeedFragment : Fragment() {
                     .show()
             }
         })
+
         viewModel.data.observe(viewLifecycleOwner, { state ->
-            adapter.submitList(state.posts)
+            adapter.submitList(state.posts) {
+                if (scrollToTop) {
+                    binding.list.smoothScrollToPosition(0)
+                    scrollToTop = false;
+                }
+            }
             binding.emptyText.isVisible = state.empty
         })
 
+        viewModel.newerCount.observe(viewLifecycleOwner) {
+            if (it > 0) {
+                binding.newPostsButton.isVisible = true
+            }
+            println("New posts count: $id")
+        }
+
+        binding.newPostsButton.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                viewModel.setAllPostsVisible().join()
+                scrollToTop = true
+                it.isVisible = false
+            }
+        }
 
         binding.retryButton.setOnClickListener {
             viewModel.loadPosts()
@@ -98,6 +125,7 @@ class FeedFragment : Fragment() {
         binding.swiperefresh.setOnRefreshListener {
             binding.swiperefresh.setRefreshing(false)
             binding.progress.isVisible = true
+            binding.newPostsButton.isVisible = false
             viewModel.refreshPosts()
         }
 
