@@ -99,7 +99,9 @@ class FeedFragment : Fragment() {
         })
 
         viewModel.newerCount.observe(viewLifecycleOwner) {
-            binding.newPostsButton.isVisible = true
+            if (it > 0) {
+                binding.newPostsButton.isVisible = true
+            }
             println("New posts count: $id")
         }
 
