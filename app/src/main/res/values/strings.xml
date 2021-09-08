@@ -35,4 +35,6 @@
     <string name="menu_save">Save</string>
     <string name="description_select_photo">Select image from gallery</string>
     <string name="description_take_photo">Make image with camera</string>
+    <string name="description_photo">Attached image</string>
+    <string name="remove">Remove</string>
 </resources>

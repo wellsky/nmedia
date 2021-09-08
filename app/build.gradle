@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "ru.netology.nmedia"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
     }
 }
 
