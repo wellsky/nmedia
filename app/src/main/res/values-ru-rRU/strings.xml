@@ -42,4 +42,6 @@
     <string name="sign_up">Регистрация</string>
     <string name="sign_out">Выйти</string>
     <string name="google_play_unavailable">Сервис Google Play недоступен</string>
+    <string name="enter_login_data">Введите логин и пароль</string>
+    <string name="submit_login_form">Войти</string>
 </resources>
