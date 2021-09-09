@@ -33,4 +33,9 @@
     <string name="error_post_like">Ошибка при обновлении сообщения</string>
     <string name="close_snackbar">Закрыть</string>
     <string name="new_posts_available">Доступны новые сообщения</string>
+    <string name="menu_save">Сохранить</string>
+    <string name="description_select_photo">Вставить изображение из галлереи</string>
+    <string name="description_take_photo">Вставить изображение с камеры</string>
+    <string name="description_photo">Прикрепленное изображение</string>
+    <string name="remove">Удалить</string>
 </resources>

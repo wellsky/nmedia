@@ -9,13 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
-import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
+import ru.netology.nmedia.activity.ImageViewFragment.Companion.imageUrl
 import ru.netology.nmedia.activity.PostDetailsFragment.Companion.postId
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
@@ -51,6 +49,15 @@ class FeedFragment : Fragment() {
                 )
             }
 
+            override fun onAttachedImageView(attachmentUrl: String) {
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_imageViewFragment,
+                    Bundle().apply {
+                        imageUrl = attachmentUrl
+                    }
+                )
+            }
+
             override fun onLike(post: Post, like: Boolean) {
                 viewModel.likeById(post.id, like)
             }
@@ -78,8 +85,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.swiperefresh.isRefreshing = state.refreshing
 
-            binding.retryTitle.isVisible = state.error
-            binding.retryButton.isVisible = state.error
+            binding.errorGroup.isVisible = state.error
 
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)

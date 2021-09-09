@@ -32,4 +32,9 @@
     <string name="error_post_like">Error updating post</string>
     <string name="close_snackbar">Close</string>
     <string name="new_posts_available">New posts available</string>
+    <string name="menu_save">Save</string>
+    <string name="description_select_photo">Select image from gallery</string>
+    <string name="description_take_photo">Make image with camera</string>
+    <string name="description_photo">Attached image</string>
+    <string name="remove">Remove</string>
 </resources>
