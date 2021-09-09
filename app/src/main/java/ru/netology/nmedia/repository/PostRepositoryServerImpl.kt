@@ -30,6 +30,7 @@ class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
 
     companion object {
         const val AVATARS_FOLDER_URL = "http://10.0.2.2:9999/avatars/"
+        const val ATTACHMENTS_FOLDER_URL = "http://10.0.2.2:9999/media/"
     }
 
     override suspend fun getAll() {

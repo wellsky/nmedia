@@ -78,8 +78,7 @@ class FeedFragment : Fragment() {
             binding.progress.isVisible = state.loading
             binding.swiperefresh.isRefreshing = state.refreshing
 
-            binding.retryTitle.isVisible = state.error
-            binding.retryButton.isVisible = state.error
+            binding.errorGroup.isVisible = state.error
 
             if (state.error) {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)

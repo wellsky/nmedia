@@ -41,10 +41,14 @@ class EditPostFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.save -> {
+                println("Save")
                 fragmentBinding?.let {
+                    println("Fragment binding not null")
                     viewModel.changeContent(it.editorText.text.toString())
                     viewModel.save()
                     AndroidUtils.hideKeyboard(requireView())
+                    viewModel.loadPosts()
+                    findNavController().navigateUp()
                 }
                 true
             }
@@ -54,7 +58,16 @@ class EditPostFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
-        val binding = FragmentEditPostBinding.inflate(layoutInflater)
+
+        val binding = FragmentEditPostBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+        fragmentBinding = binding
+
+        arguments?.textArg
+            ?.let(binding.editorText::setText)
 
         //arguments?.textArg?.let(binding.editorText::setText)
         binding.editorText.setText(viewModel.edited.value?.content ?: "")
