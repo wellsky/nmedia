@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.PostItemBinding
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.enumeration.AttachmentType
 import ru.netology.nmedia.repository.PostRepositoryServerImpl
 
 interface OnInteractionListener {
@@ -19,6 +20,7 @@ interface OnInteractionListener {
     fun onDetails(post: Post) {}
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
+    fun onAttachedImageView(imageUrl: String) {}
 }
 
 class PostsAdapter (
@@ -63,15 +65,23 @@ class PostViewHolder(
                 .into(avatar)
 
             post.attachment?.let {
-                val attachmentUrl = PostRepositoryServerImpl.ATTACHMENTS_FOLDER_URL + post.attachment.url
-                Glide.with(attachmentPreview.context)
-                    .load(attachmentUrl)
-                    .timeout(10_000)
-                    .placeholder(R.drawable.ic_loading_100dp)
-                    .error(R.drawable.ic_error_100dp)
-                    .into(attachmentPreview)
+                when (it.type) {
+                    AttachmentType.IMAGE -> {
+                        val attachmentUrl = PostRepositoryServerImpl.ATTACHMENTS_FOLDER_URL + post.attachment.url
+                        Glide.with(attachmentPreview.context)
+                        .load(attachmentUrl)
+                        .timeout(10_000)
+                        .placeholder(R.drawable.ic_loading_100dp)
+                        .error(R.drawable.ic_error_100dp)
+                        .into(attachmentPreview)
 
-                attachmentPreview.isVisible = true
+                        attachmentPreview.isVisible = true
+
+                        attachmentPreview.setOnClickListener {
+                            onInteractionListener.onAttachedImageView(attachmentUrl)
+                        }
+                    }
+                }
             }
 
             menu.setOnClickListener {
