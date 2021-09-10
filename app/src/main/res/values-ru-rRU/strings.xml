@@ -44,4 +44,5 @@
     <string name="google_play_unavailable">Сервис Google Play недоступен</string>
     <string name="enter_login_data">Введите логин и пароль</string>
     <string name="submit_login_form">Войти</string>
+    <string name="error_auth">Ошибка авторизации</string>
 </resources>
