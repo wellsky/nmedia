@@ -38,4 +38,11 @@
     <string name="description_take_photo">Вставить изображение с камеры</string>
     <string name="description_photo">Прикрепленное изображение</string>
     <string name="remove">Удалить</string>
+    <string name="sign_in">Вход</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_out">Выйти</string>
+    <string name="google_play_unavailable">Сервис Google Play недоступен</string>
+    <string name="enter_login_data">Введите логин и пароль</string>
+    <string name="submit_login_form">Войти</string>
+    <string name="error_auth">Ошибка авторизации</string>
 </resources>
