@@ -1,5 +1,8 @@
 package ru.netology.nmedia.repository
 
+import android.net.Uri
+import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -12,11 +15,13 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
 import ru.netology.nmedia.api.*
 import ru.netology.nmedia.dao.PostDao
+import ru.netology.nmedia.dao.PostWorkDao
 import ru.netology.nmedia.dto.Attachment
 import ru.netology.nmedia.dto.Media
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
+import ru.netology.nmedia.entity.PostWorkEntity
 import ru.netology.nmedia.entity.toDto
 import ru.netology.nmedia.entity.toEntity
 import ru.netology.nmedia.enumeration.AttachmentType
@@ -25,7 +30,7 @@ import ru.netology.nmedia.error.AppError
 import ru.netology.nmedia.error.NetworkError
 import ru.netology.nmedia.error.UnknownError
 
-class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
+class PostRepositoryServerImpl(private val dao: PostDao, private val postWorkDao: PostWorkDao,) : PostRepository {
     override val data: Flow<List<Post>> = dao.getAll().map(List<PostEntity>::toDto).flowOn(Dispatchers.Default)
 
     companion object {
@@ -146,6 +151,32 @@ class PostRepositoryServerImpl(private val dao: PostDao) : PostRepository {
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(body.toEntity())
             emit(body.size)
+        }
+    }
+
+    override suspend fun saveWork(post: Post, upload: MediaUpload?): Long {
+        try {
+            val entity = PostWorkEntity.fromDto(post).apply {
+                if (upload != null) {
+                    this.uri = upload.file.toUri().toString()
+                }
+            }
+            return postWorkDao.insert(entity)
+        } catch (e: Exception) {
+            throw UnknownError
+        }
+    }
+
+    override suspend fun processWork(id: Long) {
+        try {
+            // TODO: handle this in homework
+            val entity = postWorkDao.getById(id)
+            if (entity.uri != null) {
+                val upload = MediaUpload(Uri.parse(entity.uri).toFile())
+            }
+            println(entity.id)
+        } catch (e: Exception) {
+            throw UnknownError
         }
     }
 }
