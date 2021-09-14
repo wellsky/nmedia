@@ -11,6 +11,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import ru.netology.nmedia.R
+import ru.netology.nmedia.auth.AppAuth
 import kotlin.random.Random
 
 class FCMService : FirebaseMessagingService() {
@@ -20,6 +21,7 @@ class FCMService : FirebaseMessagingService() {
     private val action = "action"
     private val content = "content"
     private val channelId = "remote"
+    private val recipientId = "recipientId"
     private val gson = Gson()
     
 
@@ -40,17 +42,51 @@ class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         println("message invoked " + Gson().toJson(message))
 
-        message.data[action]?.let {
-            when (it) {
-                ACTION_LIKE -> handleLike(gson.fromJson(message.data[content], LikeNotification::class.java))
-                ACTION_POST -> handlePost(gson.fromJson(message.data[content], PostNotification::class.java))
-                else -> println("Unrecognizable notification received")
+//        message.data[action]?.let {
+//            when (it) {
+//                ACTION_LIKE -> handleLike(gson.fromJson(message.data[content], LikeNotification::class.java))
+//                ACTION_POST -> handlePost(gson.fromJson(message.data[content], PostNotification::class.java))
+//                else -> println("Unrecognizable notification received")
+//            }
+//        }
+
+          handleRecipientData(gson.fromJson(message.data[content], RecipientData::class.java))
+
+
+//        if (message.data[recipientId] == 0) {
+//            AppAuth.getInstance().sendPushToken()
+//        }
+    }
+
+    override fun onNewToken(token: String) {
+        AppAuth.getInstance().sendPushToken(token)
+    }
+
+    private fun handleRecipientData(data: RecipientData) {
+        println("Handled: " + data.recipientId)
+        when (data.recipientId) {
+            null -> {
+                showSimpleMessage(data.content)
+            }
+
+            AppAuth.getInstance().myId() -> {
+                showSimpleMessage(data.content)
+            }
+
+            else -> {
+                AppAuth.getInstance().sendPushToken()
             }
         }
     }
 
-    override fun onNewToken(token: String) {
-        println(token)
+    private fun showSimpleMessage(text: String) {
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_notification)
+            .setContentText(text)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .build()
+        NotificationManagerCompat.from(this)
+            .notify(Random.nextInt(100_000), notification)
     }
 
     private fun handlePost(content: PostNotification) {
@@ -104,4 +140,9 @@ data class LikeNotification (
     val userName: String,
     val postId: Long,
     val postAuthor: String
-)
+    )
+
+data class RecipientData (
+    val recipientId: Long? = null,
+    val content: String
+    )
