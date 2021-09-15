@@ -154,6 +154,10 @@ class PostRepositoryServerImpl(private val dao: PostDao, private val postWorkDao
         }
     }
 
+    /**
+     * Сохраняет редактируемый пост и ссылку на вложение в БД
+     * Возвращает id сохраненного поста
+     */
     override suspend fun saveWork(post: Post, upload: MediaUpload?): Long {
         try {
             val entity = PostWorkEntity.fromDto(post).apply {
@@ -173,8 +177,11 @@ class PostRepositoryServerImpl(private val dao: PostDao, private val postWorkDao
             val entity = postWorkDao.getById(id)
             if (entity.uri != null) {
                 val upload = MediaUpload(Uri.parse(entity.uri).toFile())
+                saveWithAttachment(entity.toDto(), upload)
+            } else {
+                save(entity.toDto())
             }
-            println(entity.id)
+            println("processWork, entity: $entity")
         } catch (e: Exception) {
             throw UnknownError
         }
