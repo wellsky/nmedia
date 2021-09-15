@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.internal.wait
 import okio.IOException
 import ru.netology.nmedia.api.*
 import ru.netology.nmedia.dao.PostDao
@@ -141,7 +142,7 @@ class PostRepositoryServerImpl(private val dao: PostDao, private val postWorkDao
     }
 
     override fun getNewerCount(id: Long): Flow<Int> = flow {
-        while (true) {
+        while (false) {
             delay(5_000L)
             val response = PostsApi.service.getNewer(id)
             if (!response.isSuccessful) {
@@ -177,11 +178,16 @@ class PostRepositoryServerImpl(private val dao: PostDao, private val postWorkDao
             val entity = postWorkDao.getById(id)
             if (entity.uri != null) {
                 val upload = MediaUpload(Uri.parse(entity.uri).toFile())
+                println("processWork with attach, entity: $entity")
                 saveWithAttachment(entity.toDto(), upload)
             } else {
+                println("processWork no attach, entity: $entity")
                 save(entity.toDto())
             }
-            println("processWork, entity: $entity")
+
+            postWorkDao.removeById(id)
+            dao.setAllVisible()
+            println("processWork done")
         } catch (e: Exception) {
             throw UnknownError
         }

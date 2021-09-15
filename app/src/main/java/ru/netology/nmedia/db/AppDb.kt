@@ -11,7 +11,7 @@ import ru.netology.nmedia.dao.PostWorkDao
 import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.PostWorkEntity
 
-@Database(entities = [PostEntity::class, PostWorkEntity::class], version = 2, exportSchema = false)
+@Database(entities = [PostEntity::class, PostWorkEntity::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao

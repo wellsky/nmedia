@@ -50,12 +50,8 @@ class PostViewHolder(
             content.text = post.content
             like.isChecked = post.likedByMe
             like.text = "${post.likes}"
+            attachmentPreview.isVisible = false
 
-
-            // avatar.setImageResource(R.drawable.ic_user_avatar)
-            // val url = "https://electro.club/data/users/2308/avatar.jpg"
-            // val url = "http://u21.plpstatic.ru/s/1oalcp051/74936e8efbd89f32480c9e41d2f93de4/56d75c0b9e80337f0375a73d9831e4e2.jpg"
-            // val url = PostRepositoryServerImpl.AVATARS_FOLDER_URL + "notexists/" + post.authorAvatar
             val avatarUrl = PostRepositoryServerImpl.AVATARS_FOLDER_URL + post.authorAvatar
             Glide.with(avatar.context)
                 .load(avatarUrl)
