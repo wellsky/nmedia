@@ -65,6 +65,7 @@ def okhttploggin_version = "4.9.1"
 def coroutines_version = "1.5.1"
 def imagepicker_version = "2.1"
 def play_services_base_version = "17.6.0"
+def workmanager_version = "2.5.0"
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -96,6 +97,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
     implementation "com.github.dhaval2404:imagepicker:$imagepicker_version"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
+    implementation "androidx.work:work-runtime-ktx:$workmanager_version"
 
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     kapt "androidx.room:room-compiler:$room_version"

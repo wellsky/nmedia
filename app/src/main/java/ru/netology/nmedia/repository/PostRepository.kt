@@ -15,6 +15,8 @@ interface PostRepository {
     suspend fun likeById(id: Long, like: Boolean)
     suspend fun upload(upload: MediaUpload): Media
 
+    suspend fun saveWork(post: Post, upload: MediaUpload?): Long
+    suspend fun processWork(id: Long)
 
     fun getNewerCount(id: Long): Flow<Int>
 }
