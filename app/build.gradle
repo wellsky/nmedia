@@ -8,6 +8,8 @@ if (project.file('google-services.json').exists()) {
     apply plugin: 'com.google.gms.google-services'
 }
 
+apply plugin: 'dagger.hilt.android.plugin'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -98,7 +100,9 @@ dependencies {
     implementation "com.github.dhaval2404:imagepicker:$imagepicker_version"
     implementation "com.google.android.gms:play-services-base:$play_services_base_version"
     implementation "androidx.work:work-runtime-ktx:$workmanager_version"
+    implementation "com.google.dagger:hilt-android:$hilt_version"
 
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
     kapt "androidx.room:room-compiler:$room_version"
 

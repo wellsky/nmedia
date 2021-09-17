@@ -1,29 +1,31 @@
 package ru.netology.nmedia.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.repository.UsersRepository
 import ru.netology.nmedia.repository.UsersRepositoryServerImpl
+import javax.inject.Inject
 
 enum class LoginFormState {
     NONE, ERROR, SUCCESS
 }
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    application: Application,
+    private val repository: UsersRepository,
+) : ViewModel() {
     private val _state = MutableLiveData<LoginFormState>()
 
     val state: LiveData<LoginFormState>
         get() = _state
 
-
-    private val repository: UsersRepository =
-        UsersRepositoryServerImpl()
+//    private val repository: UsersRepository =
+//        UsersRepositoryServerImpl()
 
     fun tryToLogin(login: String, password: String) = viewModelScope.launch {
         try {
