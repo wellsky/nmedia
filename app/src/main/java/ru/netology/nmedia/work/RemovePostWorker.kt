@@ -1,8 +1,11 @@
 package ru.netology.nmedia.work
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import ru.netology.nmedia.db.AppDb
@@ -10,9 +13,10 @@ import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryServerImpl
 import javax.inject.Inject
 
-class RemovePostWorker @Inject constructor(
-    @ApplicationContext applicationContext: Context,
-    params: WorkerParameters,
+@HiltWorker
+class RemovePostWorker @AssistedInject constructor(
+    @Assisted applicationContext: Context,
+    @Assisted params: WorkerParameters,
     private val repository: PostRepository,
 ) : CoroutineWorker(applicationContext, params) {
     companion object {
