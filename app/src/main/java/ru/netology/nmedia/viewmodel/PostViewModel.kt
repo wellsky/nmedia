@@ -5,7 +5,9 @@ import android.net.Uri
 import androidx.core.net.toFile
 import androidx.lifecycle.*
 import androidx.work.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -23,6 +25,7 @@ import ru.netology.nmedia.util.SingleLiveEvent
 import ru.netology.nmedia.work.RemovePostWorker
 import ru.netology.nmedia.work.SavePostWorker
 import java.io.File
+import javax.inject.Inject
 
 private val empty = Post(
     id = 0,
@@ -38,18 +41,24 @@ private val empty = Post(
 
 private val noPhoto = PhotoModel()
 
-class PostViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+@ExperimentalCoroutinesApi
+class PostViewModel @Inject constructor(
+    private val application: Application,
+    private val repository: PostRepository,
+    private val appAuth: AppAuth
+) : ViewModel() {
     // упрощённый вариант
-    private val repository: PostRepository =
-            PostRepositoryServerImpl(
-                AppDb.getInstance(context = application).postDao(),
-                AppDb.getInstance(context = application).postWorkDao()
-            )
 
-    private val workManager: WorkManager =
-        WorkManager.getInstance(application)
+//    private val repository: PostRepository =
+//            PostRepositoryServerImpl(
+//                AppDb.getInstance(context = application).postDao(),
+//                AppDb.getInstance(context = application).postWorkDao()
+//            )
 
-    val data: LiveData<FeedModel> = AppAuth.getInstance()
+    private val workManager: WorkManager = WorkManager.getInstance(application)
+
+    val data: LiveData<FeedModel> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             repository.data

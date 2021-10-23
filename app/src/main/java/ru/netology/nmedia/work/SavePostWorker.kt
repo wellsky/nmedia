@@ -1,15 +1,22 @@
 package ru.netology.nmedia.work
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.repository.PostRepository
 import ru.netology.nmedia.repository.PostRepositoryServerImpl
+import javax.inject.Inject
 
-class SavePostWorker(
-    applicationContext: Context,
-    params: WorkerParameters
+@HiltWorker
+class SavePostWorker @AssistedInject constructor(
+    @Assisted applicationContext: Context,
+    @Assisted params: WorkerParameters,
+    private val repository: PostRepository
 ) : CoroutineWorker(applicationContext, params) {
     companion object {
         const val postKey = "post"
@@ -20,11 +27,11 @@ class SavePostWorker(
         if (id == 0L) {
             return Result.failure()
         }
-        val repository: PostRepository =
-            PostRepositoryServerImpl(
-                AppDb.getInstance(context = applicationContext).postDao(),
-                AppDb.getInstance(context = applicationContext).postWorkDao(),
-            )
+//        val repository: PostRepository =
+//            PostRepositoryServerImpl(
+//                AppDb.getInstance(context = applicationContext).postDao(),
+//                AppDb.getInstance(context = applicationContext).postWorkDao(),
+//            )
         return try {
             repository.processWork(id)
             Result.success()
