@@ -27,6 +27,8 @@
         app:layout_constraintBottom_toTopOf="@id/password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="1"
+        android:inputType="text"
         />
 
     <EditText
@@ -39,6 +41,8 @@
         app:layout_constraintBottom_toTopOf="@id/submit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:maxLines="1"
+        android:inputType="textPassword"
         />
 
     <com.google.android.material.button.MaterialButton
