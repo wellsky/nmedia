@@ -4,23 +4,24 @@ import android.app.Application
 import android.net.Uri
 import androidx.core.net.toFile
 import androidx.lifecycle.*
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.paging.map
 import androidx.work.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.auth.AppAuth
-import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.MediaUpload
 import ru.netology.nmedia.dto.Post
-import ru.netology.nmedia.model.FeedModel
 import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.model.PhotoModel
 import ru.netology.nmedia.repository.PostRepository
-import ru.netology.nmedia.repository.PostRepositoryServerImpl
 import ru.netology.nmedia.util.SingleLiveEvent
 import ru.netology.nmedia.work.RemovePostWorker
 import ru.netology.nmedia.work.SavePostWorker
@@ -48,33 +49,21 @@ class PostViewModel @Inject constructor(
     private val repository: PostRepository,
     private val appAuth: AppAuth
 ) : ViewModel() {
-    // упрощённый вариант
 
-//    private val repository: PostRepository =
-//            PostRepositoryServerImpl(
-//                AppDb.getInstance(context = application).postDao(),
-//                AppDb.getInstance(context = application).postWorkDao()
-//            )
+    val data: Flow<PagingData<Post>> = repository.data.map { pagingData ->
+                pagingData.map { post ->
+                    post.copy(ownedByMe = post.authorId == appAuth.myId())
+                }
+            }
 
     private val workManager: WorkManager = WorkManager.getInstance(application)
 
-    val data: LiveData<FeedModel> = appAuth
-        .authStateFlow
-        .flatMapLatest { (myId, _) ->
-            repository.data
-                .map { posts ->
-                    FeedModel(
-                        posts.map { it.copy(ownedByMe = it.authorId == myId) },
-                        posts.isEmpty()
-                    )
-                }
-        }.asLiveData(Dispatchers.Default)
-
-    val newerCount: LiveData<Int> = data.switchMap {
-        repository.getNewerCount(it.posts.filter{it.isVisible}.firstOrNull()?.id ?: 0L)
-            .catch { e -> e.printStackTrace() }
-            .asLiveData(timeoutInMs = 1000L)
-    }
+    // TODO как получать количество новых сообщений?
+//    val newerCount: LiveData<Int> = data.switchMap {
+//        repository.getNewerCount(it.posts.filter{it.isVisible}.firstOrNull()?.id ?: 0L)
+//            .catch { e -> e.printStackTrace() }
+//            .asLiveData(timeoutInMs = 1000L)
+//    }
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -90,37 +79,8 @@ class PostViewModel @Inject constructor(
     val photo: LiveData<PhotoModel>
         get() = _photo
 
-    init {
-        loadPosts()
-    }
-
-    fun getById(id :Long): Post? {
-        data.value?.posts?.map {
-            if (it.id == id) {
-                return it;
-            }
-        }
-        return null
-    }
-
-    fun loadPosts() = viewModelScope.launch {
-        try {
-            _dataState.value = FeedModelState(loading = true)
-            repository.getAll()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
-    }
-
-    fun refreshPosts() = viewModelScope.launch {
-        try {
-            _dataState.value = FeedModelState(refreshing = true)
-            repository.getAll()
-            _dataState.value = FeedModelState()
-        } catch (e: Exception) {
-            _dataState.value = FeedModelState(error = true)
-        }
+    fun loadEditedPostById(id :Long) = viewModelScope.launch {
+        edited.value = repository.getById(id)
     }
 
     fun setAllPostsVisible() = viewModelScope.launch {
@@ -201,9 +161,6 @@ class PostViewModel @Inject constructor(
                 workManager.enqueue(request)
 
                 _dataState.value = FeedModelState()
-
-//                repository.removeById(id)
-//                _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }

@@ -27,11 +27,7 @@ class SavePostWorker @AssistedInject constructor(
         if (id == 0L) {
             return Result.failure()
         }
-//        val repository: PostRepository =
-//            PostRepositoryServerImpl(
-//                AppDb.getInstance(context = applicationContext).postDao(),
-//                AppDb.getInstance(context = applicationContext).postWorkDao(),
-//            )
+
         return try {
             repository.processWork(id)
             Result.success()

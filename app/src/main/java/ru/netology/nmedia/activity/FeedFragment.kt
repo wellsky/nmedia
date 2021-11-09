@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.ImageViewFragment.Companion.imageUrl
@@ -27,6 +30,7 @@ class FeedFragment : Fragment() {
     //val viewModel: PostViewModel by viewModels()
     private var scrollToTop = false
 
+    @ExperimentalCoroutinesApi
     private val viewModel: PostViewModel by viewModels (
         ownerProducer = ::requireParentFragment
     )
@@ -83,34 +87,17 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter = adapter
 
-        viewModel.dataState.observe(viewLifecycleOwner, { state ->
-            binding.progress.isVisible = state.loading
-            binding.swiperefresh.isRefreshing = state.refreshing
+        lifecycleScope.launchWhenCreated {
+            viewModel.data.collectLatest(adapter::submitData)
+        }
 
-            binding.errorGroup.isVisible = state.error
-
-            if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.retry_loading) { viewModel.loadPosts() }
-                    .show()
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collectLatest { state ->
+                binding.swiperefresh.isRefreshing =
+                    state.refresh is LoadState.Loading ||
+                    state.prepend is LoadState.Loading ||
+                    state.append is LoadState.Loading
             }
-        })
-
-        viewModel.data.observe(viewLifecycleOwner, { state ->
-            adapter.submitList(state.posts) {
-                if (scrollToTop) {
-                    binding.list.smoothScrollToPosition(0)
-                    scrollToTop = false;
-                }
-            }
-            binding.emptyText.isVisible = state.empty
-        })
-
-        viewModel.newerCount.observe(viewLifecycleOwner) {
-            if (it > 0) {
-                binding.newPostsButton.isVisible = true
-            }
-            println("New posts count: $id")
         }
 
         binding.newPostsButton.setOnClickListener {
@@ -121,9 +108,9 @@ class FeedFragment : Fragment() {
             }
         }
 
-        binding.retryButton.setOnClickListener {
-            viewModel.loadPosts()
-        }
+//        binding.retryButton.setOnClickListener {
+//            viewModel.loadPosts()
+//        }
 
         binding.postEditorButton.setOnClickListener {
             viewModel.stopEdit()
@@ -131,10 +118,7 @@ class FeedFragment : Fragment() {
         }
 
         binding.swiperefresh.setOnRefreshListener {
-            binding.swiperefresh.setRefreshing(false)
-            binding.progress.isVisible = true
-            binding.newPostsButton.isVisible = false
-            viewModel.refreshPosts()
+            adapter.refresh()
         }
 
         return binding.root

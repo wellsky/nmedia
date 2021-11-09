@@ -26,14 +26,9 @@ class RefreshPostsWorker @AssistedInject constructor(
     }
 
     override suspend fun doWork(): Result = withContext(Dispatchers.Default) {
-//        val repository: PostRepository =
-//            PostRepositoryServerImpl(
-//                AppDb.getInstance(context = applicationContext).postDao(),
-//                AppDb.getInstance(context = applicationContext).postWorkDao(),
-//            )
-
         try {
-            repository.getAll()
+            // TODO как сюда загрузить первую страницу?
+            //repository.getAll()
             Result.success()
         } catch (e: Exception) {
             e.printStackTrace()

@@ -11,37 +11,27 @@ import ru.netology.nmedia.dto.PushToken
 
 const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
 
-//val logging = HttpLoggingInterceptor().apply {
-//    if (BuildConfig.DEBUG) {
-//        level = HttpLoggingInterceptor.Level.BODY
-//    }
-//}
-
-//val okhttp = OkHttpClient.Builder()
-//    .addInterceptor(logging)
-//    .addInterceptor { chain ->
-//        AppAuth.getInstance().authStateFlow.value.token?.let { token ->
-//            val newRequest = chain.request().newBuilder()
-//                .addHeader("Authorization", token)
-//                .build()
-//            return@addInterceptor chain.proceed(newRequest)
-//        }
-//        chain.proceed(chain.request())
-//    }
-//    .build()
-
-//val retrofit = Retrofit.Builder()
-//    .addConverterFactory(GsonConverterFactory.create())
-//    .baseUrl(BASE_URL)
-//    .client(okhttp)
-//    .build()
-
 interface ApiService {
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>
 
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+
+    @GET("posts/{id}/before")
+    suspend fun getBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("posts/{id}/after")
+    suspend fun getAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
 
     @GET("posts/{id}")
     suspend fun getById(@Path("id") id: Long): Response<Post>

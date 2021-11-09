@@ -7,9 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import okhttp3.internal.wait
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.EditPostFragment.Companion.textArg
 import ru.netology.nmedia.databinding.FragmentPostDetailsBinding
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.util.LongArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
@@ -19,6 +22,7 @@ class PostDetailsFragment : Fragment() {
         var Bundle.postId: Long by LongArg
     }
 
+    @ExperimentalCoroutinesApi
     private val viewModel: PostViewModel by viewModels (
         ownerProducer = ::requireParentFragment
     )
@@ -28,9 +32,10 @@ class PostDetailsFragment : Fragment() {
         val binding = FragmentPostDetailsBinding.inflate(layoutInflater)
 
         val postId = arguments?.postId
-        val post = viewModel.getById(postId!!)
 
-        if (post != null) {
+        viewModel.loadEditedPostById(postId!!)
+
+        viewModel.edited.observe(viewLifecycleOwner) { post ->
             with(binding) {
                 //avatar.setImageResource(post.authorAvatar)
                 author.text = post.author

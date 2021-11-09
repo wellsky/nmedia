@@ -49,7 +49,7 @@ class EditPostFragment : Fragment() {
                     viewModel.changeContent(it.editorText.text.toString())
                     viewModel.save()
                     AndroidUtils.hideKeyboard(requireView())
-                    viewModel.loadPosts()
+                    //viewModel.loadPosts()
                     findNavController().navigateUp()
                 }
                 true

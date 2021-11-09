@@ -6,15 +6,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
-@InstallIn(SingletonComponent::class)
 @Module
+@InstallIn(SingletonComponent::class)
 interface UserRepositoryModule {
-
-    //companion object privideUserPrefs(): SharedPreferences
-
-    @Binds
     @Singleton
-    fun provideUserRepository(impl: UsersRepositoryServerImpl): UsersRepository
-
+    @Binds
+    fun bindUserRepository(impl: UsersRepositoryServerImpl): UsersRepository
 }

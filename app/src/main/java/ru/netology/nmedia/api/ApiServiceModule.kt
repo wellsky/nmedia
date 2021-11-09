@@ -25,12 +25,6 @@ class ApiServiceModule @Inject constructor () {
         fun provideApi(retrofit: Retrofit): ApiService = retrofit.create()
     }
 
-//    @Provides
-//    @Singleton
-//    fun provideApiService(auth: AppAuth): ApiService {
-//        return retrofit(okhttp(loggingInterceptor(), authInterceptor(auth)))
-//            .create(ApiService::class.java)
-//    }
 
     @Provides
     @Singleton

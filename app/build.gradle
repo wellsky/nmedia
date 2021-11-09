@@ -4,10 +4,7 @@ plugins {
     id "org.jetbrains.kotlin.kapt"
 }
 
-if (project.file('google-services.json').exists()) {
-    apply plugin: 'com.google.gms.google-services'
-}
-
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
@@ -68,6 +65,7 @@ def coroutines_version = "1.5.1"
 def imagepicker_version = "2.1"
 def play_services_base_version = "17.6.0"
 def workmanager_version = "2.7.0"
+def paging_version = "3.0.1"
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -102,6 +100,7 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$workmanager_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
     implementation "androidx.hilt:hilt-work:1.0.0"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
 
 

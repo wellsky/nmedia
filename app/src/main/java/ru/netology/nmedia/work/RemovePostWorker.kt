@@ -28,11 +28,7 @@ class RemovePostWorker @AssistedInject constructor(
         if (id == 0L) {
             return Result.failure()
         }
-//        val repository: PostRepository =
-//            PostRepositoryServerImpl(
-//                AppDb.getInstance(context = applicationContext).postDao(),
-//                AppDb.getInstance(context = applicationContext).postWorkDao(),
-//            )
+
         return try {
             repository.removeById(id)
             Result.success()
