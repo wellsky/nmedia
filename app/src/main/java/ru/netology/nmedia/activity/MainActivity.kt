@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkGoogleApiAvailability() {
-        with(googleApiAvailability) {
+        with (googleApiAvailability) {
             val code = isGooglePlayServicesAvailable(this@MainActivity)
             if (code == ConnectionResult.SUCCESS) {
                 return@with
@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
 
-//        FirebaseMessaging.getInstance().token.addOnSuccessListener {
         firebaseMessaging.token.addOnSuccessListener {
             println(it)
         }

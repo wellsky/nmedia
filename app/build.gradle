@@ -4,10 +4,7 @@ plugins {
     id "org.jetbrains.kotlin.kapt"
 }
 
-if (project.file('google-services.json').exists()) {
-    apply plugin: 'com.google.gms.google-services'
-}
-
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'dagger.hilt.android.plugin'
 
 android {
