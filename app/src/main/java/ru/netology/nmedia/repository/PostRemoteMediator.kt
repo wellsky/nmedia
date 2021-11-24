@@ -27,6 +27,7 @@ class PostRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, PostEntity>
     ): MediatorResult {
+        println("Load...")
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> {
