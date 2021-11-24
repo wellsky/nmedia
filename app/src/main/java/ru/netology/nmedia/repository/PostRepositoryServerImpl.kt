@@ -44,13 +44,6 @@ class PostRepositoryServerImpl @Inject constructor(
     appDb: AppDb,
 ) : PostRepository {
 
-//    override val data: Flow<PagingData<Post>> = appAuth.authStateFlow.flatMapLatest {
-//        Pager(
-//            config = PagingConfig(pageSize = 5, enablePlaceholders = false),
-//            pagingSourceFactory = { PostPagingSource(apiService) },
-//        ).flow
-//    }
-
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<Post>> = Pager(
         config = PagingConfig(pageSize = 25),

@@ -59,15 +59,3 @@ interface ApiService {
     @POST("users/push-tokens")
     suspend fun savePushToken(@Body pushToken: PushToken): Response<Unit>
 }
-
-//object PostsApi {
-//    val service: PostsApiService by lazy {
-//        retrofit.create(PostsApiService::class.java)
-//    }
-//}
-//
-//object UsersApi {
-//    val service: UsersApiService by lazy {
-//        retrofit.create(UsersApiService::class.java)
-//    }
-//}

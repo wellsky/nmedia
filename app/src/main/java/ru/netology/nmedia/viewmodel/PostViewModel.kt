@@ -58,13 +58,6 @@ class PostViewModel @Inject constructor(
 
     private val workManager: WorkManager = WorkManager.getInstance(application)
 
-    // TODO как получать количество новых сообщений?
-//    val newerCount: LiveData<Int> = data.switchMap {
-//        repository.getNewerCount(it.posts.filter{it.isVisible}.firstOrNull()?.id ?: 0L)
-//            .catch { e -> e.printStackTrace() }
-//            .asLiveData(timeoutInMs = 1000L)
-//    }
-
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState

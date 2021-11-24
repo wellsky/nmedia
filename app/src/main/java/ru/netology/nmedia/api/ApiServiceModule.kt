@@ -37,7 +37,6 @@ class ApiServiceModule @Inject constructor () {
     @Provides
     @Singleton
     fun provideOkHttp(
-        //userRepository: UsersRepository,
         appAuth: AppAuth,
         logging: Interceptor
     ): OkHttpClient = OkHttpClient.Builder()

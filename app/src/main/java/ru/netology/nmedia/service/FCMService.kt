@@ -48,20 +48,7 @@ class FCMService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         println("message invoked " + Gson().toJson(message))
 
-//        message.data[action]?.let {
-//            when (it) {
-//                ACTION_LIKE -> handleLike(gson.fromJson(message.data[content], LikeNotification::class.java))
-//                ACTION_POST -> handlePost(gson.fromJson(message.data[content], PostNotification::class.java))
-//                else -> println("Unrecognizable notification received")
-//            }
-//        }
-
-          handleRecipientData(gson.fromJson(message.data[content], RecipientData::class.java))
-
-
-//        if (message.data[recipientId] == 0) {
-//            AppAuth.getInstance().sendPushToken()
-//        }
+        handleRecipientData(gson.fromJson(message.data[content], RecipientData::class.java))
     }
 
     override fun onNewToken(token: String) {
