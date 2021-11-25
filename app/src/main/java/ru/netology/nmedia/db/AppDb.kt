@@ -9,7 +9,7 @@ import ru.netology.nmedia.entity.PostEntity
 import ru.netology.nmedia.entity.PostRemoteKeyEntity
 import ru.netology.nmedia.entity.PostWorkEntity
 
-@Database(entities = [PostEntity::class, PostWorkEntity::class, PostRemoteKeyEntity::class], version = 3, exportSchema = false)
+@Database(entities = [PostEntity::class, PostWorkEntity::class, PostRemoteKeyEntity::class], version = 7, exportSchema = false)
 //@TypeConverters(Converters::class)
 abstract class AppDb : RoomDatabase() {
     abstract fun postDao(): PostDao
